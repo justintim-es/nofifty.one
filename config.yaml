@@ -1,0 +1,7 @@
+p2pPortus: '8989'
+publicaClavis: '049350e672483b1feae4bc95d5b3f70f870fd564e04ba179d09b408550cab0dc197e538c42a1c12823a23f335ebc12a1cc76b47f4ca007adb41d25d6cfeb52e516'
+internumIp: '127.0.0.1'
+externalIp: '127.0.0.1'
+novus: true
+directory: 'neschew'
+maxPares: 50
