@@ -1,7 +1,7 @@
 p2pPortus: '8989'
-publicaClavis: '049350e672483b1feae4bc95d5b3f70f870fd564e04ba179d09b408550cab0dc197e538c42a1c12823a23f335ebc12a1cc76b47f4ca007adb41d25d6cfeb52e516'
-internumIp: '127.0.0.1'
-externalIp: '127.0.0.1'
+publicaClavis: '0425dbac44c0d3db1204a7074404b985ea857953349bf11ad1ebc087af24a758c5f23df932aa2e2322c2a0e69cc1f6857a5efd6d6f12f7d0d7e22bb1088f38145e'
+internumIp: '95.179.247.218'
+externalIp: '95.179.247.218'
 novus: true
-directory: 'neschew'
+directory: './root/blocks'
 maxPares: 50

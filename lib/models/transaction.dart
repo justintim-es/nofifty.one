@@ -34,7 +34,7 @@ class TransactionOutput {
   };
   TransactionOutput.fromJson(Map<String, dynamic> jsoschon):
       publicKey = jsoschon['publicKey'].toString(),
-      nof = BigInt.parse(jsoschon['gla'].toString());
+      nof = BigInt.parse(jsoschon['nof'].toString());
 }
 
 
