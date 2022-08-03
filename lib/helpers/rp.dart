@@ -53,7 +53,9 @@ class Rp {
             gladiator: Gladiator(null, [GladiatorOutput(propters.take((propters.length / 2).round()).toList()), GladiatorOutput(propters.skip((propters.length / 2).round()).toList())], Utils.randomHex(32)),
             liberTransactions: liberTxs,
             fixumTransactions: fixumTxs,
-            expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList()
+            expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
+            scans: [],
+            humanify: null
         );
         newThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort, idx])));
       }
@@ -157,6 +159,8 @@ class Rp {
           liberTransactions: liberTxs,
           fixumTransactions: fixumTxs,
           expressiTransactions: [],
+          scans: [],
+          humanify: null
         );
         ReceivePort acciperePortus = ReceivePort();
         newThreads.add(await Isolate.spawn(Obstructionum.confussus, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
@@ -272,7 +276,9 @@ class Rp {
             gladiator: Gladiator(GladiatorInput(gladiatorExpressiIndex, Utils.signum(PrivateKey.fromHex(Pera.curve(), gladiatorExpressiPrivateKey), gladiatorToAttack.outputs[gladiatorExpressiIndex]), gladiatorExpressiId), [], Utils.randomHex(32)),
             liberTransactions: liberTxs,
             fixumTransactions: fixumTxs,
-            expressiTransactions: []
+            expressiTransactions: [],
+            scans: [],
+            humanify: null
         );
         //the bug is that we add it to efectus threads
         // efectusThreads

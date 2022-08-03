@@ -106,7 +106,9 @@ class MineExpressiController extends ResourceController {
           gladiator: Gladiator(GladiatorInput(conf.index!, Utils.signum(PrivateKey.fromHex(Pera.curve(), conf.privateKey!), gladiatorToAttack.outputs[conf.index!]), conf.gladiatorId!), [], Utils.randomHex(32)),
           liberTransactions: liberTxs,
           fixumTransactions: fixumTxs,
-          expressiTransactions: []
+          expressiTransactions: [],
+          scans: [],
+          humanify: null
       );
       expressiThreads.add(await Isolate.spawn(Obstructionum.expressi, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
       acciperePortus.listen((nuntius) async {

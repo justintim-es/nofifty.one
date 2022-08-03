@@ -26,9 +26,11 @@ environment:
 
 dependencies:
   conduit: ^3.0.0
+  dbcrypt: ^2.0.0
   ecdsa: ^0.0.4
   elliptic: ^0.3.8
   hex: ^0.2.0
+  jaguar_jwt: ^3.0.0
   tuple: ^2.0.0
 
 dev_dependencies:

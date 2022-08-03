@@ -1,9 +1,12 @@
 import 'dart:core';
 import 'dart:isolate';
 
+import 'package:nofiftyone/controllers/answer_controller.dart';
 import 'package:nofiftyone/controllers/defensio_bid_controller.dart';
 import 'package:nofiftyone/controllers/defensio_controller.dart';
 import 'package:nofiftyone/controllers/gladiator_controller.dart';
+import 'package:nofiftyone/controllers/hash_controller.dart';
+import 'package:nofiftyone/controllers/humanify_controller.dart';
 import 'package:nofiftyone/controllers/mine_confussus_controller.dart';
 import 'package:nofiftyone/controllers/mine_efectus_controller.dart';
 import 'package:nofiftyone/controllers/mine_expressi_controller.dart';
@@ -11,6 +14,8 @@ import 'package:nofiftyone/controllers/network_controller.dart';
 import 'package:nofiftyone/controllers/obstructionum_controller.dart';
 import 'package:nofiftyone/controllers/rationem_controller.dart';
 import 'package:nofiftyone/controllers/rationem_stagnum_controller.dart';
+import 'package:nofiftyone/controllers/respondere_controller.dart';
+import 'package:nofiftyone/controllers/scan_controller.dart';
 import 'package:nofiftyone/controllers/statera_controller.dart';
 import 'package:nofiftyone/controllers/transaction_controller.dart';
 import 'package:nofiftyone/controllers/transaction_expressi_controller.dart';
@@ -42,6 +47,7 @@ class NofiftyoneChannel extends ApplicationChannel {
   Map<String, Isolate> propterIsolates = Map();
   Map<String, Isolate> liberTxIsolates = Map();
   Map<String, Isolate> fixumTxIsolates = Map();
+  Map<String, Isolate> humanifyIsolates = Map();
   List<Isolate> efectusThreads = [];
   List<Isolate> confussuses = [];
   List<Isolate> expressiThreads = [];
@@ -85,11 +91,10 @@ class NofiftyoneChannel extends ApplicationChannel {
     });
   }
 
-  /// Construct the request channel.
+  /// Construct the request chann
   ///
   /// Return an instance of some [Controller] that will be the initial receiver
-  /// of all [Request]s.
-  ///
+  /// of all [Request]s.  ///
   /// This method is invoked after [prepare].
   @override
   Controller get entryPoint {
@@ -117,6 +122,14 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/transaction-fixum').link(() => TransactionFixumController(directory!, p2p!, fixumTxIsolates));
     router.route('/transaction-expressi').link(() => TransactionExpressiController(p2p!));
     router.route('/probationem').link(() => ProbationemController(directory!));
+   // router.route('/scan/:privatus').link(() => ScanController(directory!, p2p!));
+    router.route('/humanify/[:dominus[/:quaestio[/:respondere]]]').link(() => HumanifyController(directory!, p2p!, humanifyIsolates));
+    router.route('/respondere/:answer').link(() => RespondereController());
+    router.route('/scan/[:probationem]').link(() => ScanController(directory!, p2p!));
+    router.route('/hash/:index/:answer').link(() => HashController());
+    router.route('/answer').link(() => AnswerController(directory!, p2p!));
+
     return router;
   }
 }
+  

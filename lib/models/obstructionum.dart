@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:jaguar_jwt/jaguar_jwt.dart';
 import 'package:nofiftyone/models/constantes.dart';
+import 'package:nofiftyone/models/exampla.dart';
 import 'package:nofiftyone/models/gladiator.dart';
+import 'package:nofiftyone/models/humanify.dart';
+import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/models/transaction.dart';
 import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/models/gladiator.dart';
@@ -13,6 +17,7 @@ import 'dart:convert';
 import 'dart:isolate';
 import 'package:nofiftyone/models/pera.dart';
 import 'package:tuple/tuple.dart';
+import 'package:dbcrypt/dbcrypt.dart';
 enum Generare {
   INCIPIO,
   EFECTUS,
@@ -51,6 +56,8 @@ class InterioreObstructionum {
   final List<Transaction> liberTransactions;
   final List<Transaction> fixumTransactions;
   final List<Transaction> expressiTransactions;
+  final List<Scan> scans;
+  Humanify? humanify;
   InterioreObstructionum({
     required this.generare,
     required this.obstructionumDifficultas,
@@ -69,7 +76,9 @@ class InterioreObstructionum {
     required this.gladiator,
     required this.liberTransactions,
     required this.fixumTransactions,
-    required this.expressiTransactions
+    required this.expressiTransactions,
+    required this.scans,
+    required this.humanify
   }): indicatione = DateTime.now().microsecondsSinceEpoch, nonce = BigInt.zero {
     BigInt total = BigInt.zero;
     for (int nuschum in obstructionumNumerus) {
@@ -96,7 +105,8 @@ class InterioreObstructionum {
       gladiator = Gladiator(null, List<GladiatorOutput>.from([GladiatorOutput(List<Propter>.from([Propter.incipio(InterioreRationem.incipio(producentis))]))]), Utils.randomHex(32)),
       liberTransactions = List<Transaction>.from([Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(producentis, Constantes.obstructionumPraemium)], Utils.randomHex(32)))]),
       fixumTransactions = [],
-      expressiTransactions = [];
+      expressiTransactions = [],
+      scans = [Scan(output: ScanOutput(prior: '', novus: producentis), input: null)];
 
   InterioreObstructionum.efectus({
     required this.obstructionumDifficultas,
@@ -114,7 +124,9 @@ class InterioreObstructionum {
     required this.gladiator,
     required this.liberTransactions,
     required this.fixumTransactions,
-    required this.expressiTransactions
+    required this.expressiTransactions,
+    required this.scans,
+    required this.humanify
   }):
       generare = Generare.EFECTUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -138,7 +150,9 @@ class InterioreObstructionum {
     required this.gladiator,
     required this.liberTransactions,
     required this.fixumTransactions,
-    required this.expressiTransactions
+    required this.expressiTransactions,
+    required this.scans,
+    required this.humanify
   }):
       generare = Generare.CONFUSSUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -160,7 +174,9 @@ class InterioreObstructionum {
     required this.gladiator,
     required this.liberTransactions,
     required this.fixumTransactions,
-    required this.expressiTransactions
+    required this.expressiTransactions,
+    required this.scans,
+    required this.humanify
   }):
     generare = Generare.EXPRESSI,
     indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -192,7 +208,9 @@ class InterioreObstructionum {
     'gladiator': gladiator.toJson(),
     'liberTransactions': liberTransactions.map((e) => e.toJson()).toList(),
     'fixumTransactions': fixumTransactions.map((e) => e.toJson()).toList(),
-    'expressiTransactions': expressiTransactions.map((e) => e.toJson()).toList()
+    'expressiTransactions': expressiTransactions.map((e) => e.toJson()).toList(),
+    'scans': scans.map((e) => e.toJson()).toList(),
+    'humanify': humanify?.toJson()
   };
   InterioreObstructionum.fromJson(Map jsoschon):
       generare = GenerareFromJson.fromJson(jsoschon['generare'].toString()) as Generare,
@@ -214,7 +232,9 @@ class InterioreObstructionum {
       gladiator = Gladiator.fromJson(jsoschon['gladiator'] as Map<String, dynamic>),
       liberTransactions = List<Transaction>.from(jsoschon['liberTransactions'].map((l) => Transaction.fromJson(l as Map<String, dynamic>)) as Iterable<dynamic>),
       fixumTransactions = List<Transaction>.from(jsoschon['fixumTransactions'].map((f) => Transaction.fromJson(f as Map<String, dynamic>)) as Iterable<dynamic>),
-      expressiTransactions = List<Transaction>.from(jsoschon['expressiTransactions'].map((e) => Transaction.fromJson(e as Map<String, dynamic>)) as Iterable<dynamic>);
+      expressiTransactions = List<Transaction>.from(jsoschon['expressiTransactions'].map((e) => Transaction.fromJson(e as Map<String, dynamic>)) as Iterable<dynamic>),
+      scans = List<Scan>.from(jsoschon['scans'].map((s) => Scan.fromJson(s as Map<String, dynamic>)) as Iterable<dynamic>),
+      humanify = jsoschon['humanify'] != null ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null; 
 }
 
 

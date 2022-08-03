@@ -1,5 +1,7 @@
 import 'dart:isolate';
 import 'package:conduit/conduit.dart';
+import 'package:nofiftyone/models/humanify.dart';
+import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/nofiftyone.dart';
 import 'package:nofiftyone/models/aboutconfig.dart';
 import 'package:nofiftyone/models/gladiator.dart';
@@ -43,6 +45,10 @@ class MineEfectusController extends ResourceController {
       for (int nuschum in await Obstructionum.utObstructionumNumerus(directory)) {
         numerus += BigInt.parse(nuschum.toString());
       }
+      List<Scan> scaschans = [];
+      for (Scan scan in priorObstructionum.interioreObstructionum.scans) {
+        // scaschans.add(Scan(prior: InterioreScan(unus: )))
+      }
       InterioreObstructionum interiore = InterioreObstructionum.efectus(
           obstructionumDifficultas: obstructionumDifficultas.length,
           divisa: (numerus / await Obstructionum.utSummaDifficultas(directory)),
@@ -59,7 +65,9 @@ class MineEfectusController extends ResourceController {
           gladiator: Gladiator(null, [GladiatorOutput(propters.take((propters.length / 2).round()).toList()), GladiatorOutput(propters.skip((propters.length / 2).round()).toList())], Utils.randomHex(32)),
           liberTransactions: liberTxs,
           fixumTransactions: fixumTxs,
-          expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList()
+          expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
+          scans: p2p.scans,
+          humanify: Humanify.grab(p2p.humanifies)
       );
       efectusThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort])));
       p2p.isEfectusActive = true;
@@ -111,6 +119,7 @@ class MineEfectusController extends ResourceController {
             p2p.expressiRp.sendPort.send("update miner");
           }
           isSalutaris = false;
+          p2p.scans = [];
       });
       return Response.ok({
         "message": "coepi efectus miner",
@@ -118,6 +127,8 @@ class MineEfectusController extends ResourceController {
         "threads": efectusThreads.length 
       });
     } catch (err, s) {
+      print(err);
+      print(s);
       return Response.badRequest();
     }
   }

@@ -35,11 +35,11 @@ class TransactionFixumController extends ResourceController {
           });
         }
         final InterioreTransaction tx = await Pera.novamRem(false, false, unCalcTx.from!, unCalcTx.nof!, unCalcTx.to!, p2p.fixumTxs, directory, null);
-        ReceivePort acciperePortus = ReceivePort();
-        fixumTxIsolates[tx.id] = await Isolate.spawn(Transaction.quaestum, List<dynamic>.from([tx, acciperePortus.sendPort]));
+          ReceivePort acciperePortus = ReceivePort();
+          fixumTxIsolates[tx.id] = await Isolate.spawn(Transaction.quaestum, List<dynamic>.from([tx, acciperePortus.sendPort]));
         acciperePortus.listen((transaction) {
             p2p.syncFixumTx(transaction as Transaction);
-        });
+          });
         return Response.ok({
           "transactionIdentitatis": tx.id
         });

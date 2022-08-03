@@ -4,9 +4,11 @@ import 'dart:isolate';
 import 'package:nofiftyone/models/gladiator.dart';
 import 'package:crypto/crypto.dart';
 import 'package:hex/hex.dart';
+import 'package:nofiftyone/models/humanify.dart';
 import 'package:nofiftyone/models/pera.dart';
 import 'package:nofiftyone/models/obstructionum.dart';
 import 'package:nofiftyone/models/constantes.dart';
+import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/models/transaction.dart';
 import 'package:ecdsa/ecdsa.dart';
@@ -79,6 +81,20 @@ class SocketsP2PMessage extends P2PMessage {
     'sockets': sockets
   };
 }
+
+class ScanP2PMessage extends P2PMessage {
+  Scan scan;
+  ScanP2PMessage(this.scan, String type, String from): super(type, from);
+  ScanP2PMessage.fromJson(Map<String, dynamic> jsoschon):
+    scan = Scan.fromJson(jsoschon['scan'] as Map<String, dynamic>),
+    super.fromJson(jsoschon);
+  @override
+  Map<String, dynamic> toJson() => {
+    'scan': scan.toJson(),
+    'type': type,
+    'from': from
+  };
+}
 class PropterP2PMessage extends P2PMessage {
   Propter propter;
   PropterP2PMessage(this.propter, String type, String from): super(type, from);
@@ -88,8 +104,24 @@ class PropterP2PMessage extends P2PMessage {
   @override
   Map<String, dynamic> toJson() => {
     'propter': propter.toJson(),
-    'type': type
+    'type': type,
+    'from': from
   };
+}
+class HumanifyP2PMessage extends P2PMessage {
+  Humanify humanify;
+  HumanifyP2PMessage(this.humanify, String type, String from): super(type, from);
+  HumanifyP2PMessage.fromJson(Map<String, dynamic> jsoschon):
+    humanify = Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>),
+    super.fromJson(jsoschon);
+
+  @override
+  Map<String, dynamic> toJson() => {
+    'humanify': humanify.toJson(),
+    'type': type,
+    'from': from
+  };
+
 }
 class RemoveProptersP2PMessage extends P2PMessage {
   List<String> ids;
@@ -187,6 +219,10 @@ class P2P {
   bool isConfussusActive = false;
   bool isExpressiActive = false;
 
+  List<Scan> scans = [];
+  List<Humanify> humanifies = [];
+
+
   List<int> summaNumerus;
   P2P(this.maxPeers, this.secret, this.from, this.dir, this.summaNumerus);
   listen(String internalIp, int port) async {
@@ -216,6 +252,24 @@ class P2P {
             sockets.add(ssp2pm.socket);
           }
           client.destroy();
+        } else if (msg.type == 'humanify') {
+          HumanifyP2PMessage hp2pm = HumanifyP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          if (hp2pm.humanify.probationem == HEX.encode(sha256.convert(utf8.encode(json.encode(hp2pm.humanify.interiore.toJson()))).bytes)) {
+            if (humanifies.any((h) => h.interiore.id == hp2pm.humanify.interiore.id)) {
+              humanifies.removeWhere((element) => element.interiore.id == hp2pm.humanify.interiore.id);
+            }
+            humanifies.add(hp2pm.humanify);
+            client.destroy();
+          } 
+        } else if (msg.type == 'scan') {
+          ScanP2PMessage sp2pm = ScanP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          List<Obstructionum> obss = await Utils.getObstructionums(dir);
+          for (List<Scan> scans in obss.map((e) => e.interioreObstructionum.scans)) {
+          if(!scans.any((element) => element.input!.passphraseIndex == sp2pm.scan.input!.passphraseIndex && element.input!.probationem == sp2pm.scan.input!.probationem)) {
+            scans.add(sp2pm.scan);
+          }
+          client.destroy();
+        }
         } else if(msg.type == 'propter') {
           PropterP2PMessage pp2pm = PropterP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
           if(pp2pm.propter.probationem == HEX.encode(sha256.convert(utf8.encode(json.encode(pp2pm.propter.interioreRationem.toJson()))).bytes)) {
@@ -641,6 +695,16 @@ class P2P {
       soschock.write(json.encode(PropterP2PMessage(propter, 'propter', from).toJson()));
     }
   }
+  void syncHumanify(Humanify humanify) async {
+    if(humanifies.any((element) => element.interiore.id == humanify.interiore.id)) {
+      humanifies.removeWhere((element) => element.interiore.id == humanify.interiore.id);
+    }
+    humanifies.add(humanify);
+    for (String socket in sockets) {
+      Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+      soschock.write(json.encode(HumanifyP2PMessage(humanify, 'humanify', from).toJson()));
+    }
+  }
   void syncLiberTx(Transaction tx) async {
     if (liberTxs.any((t) => t.interioreTransaction.id == tx.interioreTransaction.id)) {
       liberTxs.removeWhere((t) => t.interioreTransaction.id == tx.interioreTransaction.id);
@@ -675,6 +739,12 @@ class P2P {
         fixumTxs.removeWhere((fixum) => rtp2pm.ids.contains(fixum.interioreTransaction.id));
       });
     }
+  }
+  void syncScan(Scan scan) async {
+    for (String socket in sockets) {
+      Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+      soschock.write(json.encode(ScanP2PMessage(scan, 'scan', from)));
+    }    
   }
   void removePropters(List<String> ids) async {
     propters.removeWhere((p) => ids.any((i) => i == p.interioreRationem.id));

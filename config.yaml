@@ -1,7 +1,7 @@
 p2pPortus: '8989'
 publicaClavis: '0425dbac44c0d3db1204a7074404b985ea857953349bf11ad1ebc087af24a758c5f23df932aa2e2322c2a0e69cc1f6857a5efd6d6f12f7d0d7e22bb1088f38145e'
-internumIp: '95.179.247.218'
-externalIp: '95.179.247.218'
+internumIp: '127.0.0.1'
+externalIp: '127.0.0.1'
 novus: true
 directory: './root/blocks'
 maxPares: 50
