@@ -27,22 +27,29 @@ class ScanController extends ResourceController {
       scans.add(obs.interioreObstructionum.scans);
       humanifies.add(obs.interioreObstructionum.humanify);
     }
-    List<List<ScanInput?>> inputs = [];
+    // all we have to count down is the last humanify
+    List<ScanInput?> inputs = [];
     for (List<Scan> scaschans in scans) {
-      inputs.add(scaschans.map((e) => e.input).toList());
+      // inputs.addAll(scaschans.map((e) => e.input));
+      //be ware we need imputs when whe have to give the passphrase index
+      inputs.addAll(p2p.scans.map((s) => s.input));
     }
-    for (int i = inputs.length; i > 0; i--) {
-      if (inputs[i].where((ischin) => ischin?.probationem == humanifies[i]?.probationem).isEmpty) {
-        return Response.ok({
-          "probationem": humanifies[i]?.probationem,
-          "index": inputs[i].length
-        });
-      }
-    }
+    int index = humanifies.lastIndexWhere((element) => !inputs.any((i) => i?.probationem == element?.probationem) && element != null);
+    
     return Response.ok({
-      "probationem": humanifies.first?.probationem,
-      "index": 0
+      "probationem": humanifies[index]!.probationem,
+      "index": index
     });
+    // List<List<ScanInput?>> inputs = [];
+    // for (List<Scan> scaschans in scans) {
+    //   inputs.add(scaschans.map((e) => e.input).toList());
+    // }
+    
+    // Humanify? humanify = humanifies.lastWhere((element) => !inputs.any((e) => e.any((ee) => ee?.probationem == element?.probationem)));
+    // return Response.ok({
+    //   "probationem": rst?.probationem,
+    //   "index": 0
+    // });
  }
   @Operation.get('probationem')
   Future<Response> image(@Bind.path('probationem') String probationem) async {
