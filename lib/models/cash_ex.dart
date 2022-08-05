@@ -34,26 +34,32 @@ class CashEx {
     //     }
     //   }
     // }
-
-    for(int i = 0; i < scans.where((s) => s.isNotEmpty); i++) {
-      
-    }
-    List<String> publics = [];
-    List<List<Scan>> llscans = [];
+    List<CashExOutput> outs = [];
     for (Scan praemium in praemia) {
-      scans.forEach((element) => llscans.add(element.where((element) =>  element.output.prior == praemium.output.novus).toList()));
-      publics.add(praemium.output.prior);
-    }
-    List<List<Scan>> lliscans = [];
-    for (int i = 0; i < llscans.length; i++) {
-      for (int ii = 0 ; ii < llscans[i].length; ii ++) {
-        scans.forEach((element) => lliscans.add(element.where((eschel) => llscans[i][ii].output.prior == eschel.output.novus).toList()));
+      for (List<Scan> lscan in scans.where((element) => element.isNotEmpty)) {
+      while(lscan.any((ls) => ls.output.novus == praemium.output.prior)) {
+        for (Scan ss in lscan.where((s) => s.output.novus == praemium.output.prior)) {
+          outs.add(CashExOutput(ss.output.prior, BigInt.one));
+        }
       }
     }
-    List<CashExOutput> outputs = [];
-    for (int i = 0; i < publics.length && i < lliscans.length; i++) {
-      outputs.add(CashExOutput(publics[i], BigInt.from(lliscans[i].length)));
-    }
-    return CashEx(outputs);
+
+    // List<String> publics = [];
+    // List<List<Scan>> llscans = [];
+    // for (Scan praemium in praemia) {
+    //   scans.forEach((element) => llscans.add(element.where((element) =>  element.output.prior == praemium.output.novus).toList()));
+    //   publics.add(praemium.output.prior);
+    // }
+    // List<List<Scan>> lliscans = [];
+    // for (int i = 0; i < llscans.length; i++) {
+    //   for (int ii = 0 ; ii < llscans[i].length; ii ++) {
+    //     scans.forEach((element) => lliscans.add(element.where((eschel) => llscans[i][ii].output.prior == eschel.output.novus).toList()));
+    //   }
+    // }
+    // List<CashExOutput> outputs = [];
+    // for (int i = 0; i < publics.length && i < lliscans.length; i++) {
+    //   outputs.add(CashExOutput(publics[i], BigInt.from(lliscans[i].length)));
+    // }
+    return CashEx(outs);
   }
 }
