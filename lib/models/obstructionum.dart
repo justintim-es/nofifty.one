@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:jaguar_jwt/jaguar_jwt.dart';
+import 'package:nofiftyone/models/cash_ex.dart';
 import 'package:nofiftyone/models/constantes.dart';
 import 'package:nofiftyone/models/exampla.dart';
 import 'package:nofiftyone/models/gladiator.dart';
@@ -58,6 +59,7 @@ class InterioreObstructionum {
   final List<Transaction> expressiTransactions;
   final List<Scan> scans;
   Humanify? humanify;
+  CashEx? cashEx;
   InterioreObstructionum({
     required this.generare,
     required this.obstructionumDifficultas,
@@ -78,7 +80,8 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
-    required this.humanify
+    required this.humanify,
+    required this.cashEx
   }): indicatione = DateTime.now().microsecondsSinceEpoch, nonce = BigInt.zero {
     BigInt total = BigInt.zero;
     for (int nuschum in obstructionumNumerus) {
@@ -126,7 +129,8 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
-    required this.humanify
+    required this.humanify,
+    required this.cashEx
   }):
       generare = Generare.EFECTUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -152,7 +156,8 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
-    required this.humanify
+    required this.humanify,
+    required this.cashEx
   }):
       generare = Generare.CONFUSSUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -176,7 +181,8 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
-    required this.humanify
+    required this.humanify,
+    required this.cashEx
   }):
     generare = Generare.EXPRESSI,
     indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -210,7 +216,8 @@ class InterioreObstructionum {
     'fixumTransactions': fixumTransactions.map((e) => e.toJson()).toList(),
     'expressiTransactions': expressiTransactions.map((e) => e.toJson()).toList(),
     'scans': scans.map((e) => e.toJson()).toList(),
-    'humanify': humanify?.toJson()
+    'humanify': humanify?.toJson(),
+    'cashEx': cashEx?.toJson()
   };
   InterioreObstructionum.fromJson(Map jsoschon):
       generare = GenerareFromJson.fromJson(jsoschon['generare'].toString()) as Generare,
@@ -234,7 +241,8 @@ class InterioreObstructionum {
       fixumTransactions = List<Transaction>.from(jsoschon['fixumTransactions'].map((f) => Transaction.fromJson(f as Map<String, dynamic>)) as Iterable<dynamic>),
       expressiTransactions = List<Transaction>.from(jsoschon['expressiTransactions'].map((e) => Transaction.fromJson(e as Map<String, dynamic>)) as Iterable<dynamic>),
       scans = List<Scan>.from(jsoschon['scans'].map((s) => Scan.fromJson(s as Map<String, dynamic>)) as Iterable<dynamic>),
-      humanify = jsoschon['humanify'] != null ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null; 
+      humanify = jsoschon['humanify'] != null ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null,
+      cashEx = jsoschon['cashEx'] != null ? CashEx.fromJson(jsoschon['cashEx'] as Map<String, dynamic>) : null; 
 }
 
 

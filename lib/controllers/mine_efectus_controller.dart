@@ -1,5 +1,6 @@
 import 'dart:isolate';
 import 'package:conduit/conduit.dart';
+import 'package:nofiftyone/models/cash_ex.dart';
 import 'package:nofiftyone/models/humanify.dart';
 import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/nofiftyone.dart';
@@ -45,9 +46,11 @@ class MineEfectusController extends ResourceController {
       for (int nuschum in await Obstructionum.utObstructionumNumerus(directory)) {
         numerus += BigInt.parse(nuschum.toString());
       }
-      List<Scan> scaschans = [];
-      for (Scan scan in priorObstructionum.interioreObstructionum.scans) {
-        // scaschans.add(Scan(prior: InterioreScan(unus: )))
+      List<Scan> praemium = priorObstructionum.interioreObstructionum.scans;
+      List<List<Scan>> scaschans = [];
+      List<Obstructionum> obss = await Utils.getObstructionums(directory);
+      for (Obstructionum obs in obss) {
+        scaschans.add(obs.interioreObstructionum.scans);
       }
       InterioreObstructionum interiore = InterioreObstructionum.efectus(
           obstructionumDifficultas: obstructionumDifficultas.length,
@@ -67,7 +70,8 @@ class MineEfectusController extends ResourceController {
           fixumTransactions: fixumTxs,
           expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
           scans: p2p.scans,
-          humanify: Humanify.grab(p2p.humanifies)
+          humanify: Humanify.grab(p2p.humanifies),
+          cashEx: CashEx.count(await Obstructionum.utObstructionumNumerus(directory), praemium, scaschans)
       );
       efectusThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort])));
       p2p.isEfectusActive = true;

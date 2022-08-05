@@ -59,7 +59,7 @@ class AnswerController extends ResourceController {
         enim += BigInt.one;
       }
     }
-    if (BigInt.from(answer.index!) >= enim) {
+    if (BigInt.from(answer.index!) > enim) {
       return Response.badRequest(body: "Index greater than max allowed index");
     } 
   

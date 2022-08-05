@@ -93,7 +93,8 @@ class MineConfussusController extends ResourceController {
         fixumTransactions: fixumTxs,
         expressiTransactions: [],
         scans: p2p.scans,
-        humanify: null
+        humanify: null,
+        cashEx: null
       );
       ReceivePort acciperePortus = ReceivePort();
       confussuses.add(await Isolate.spawn(Obstructionum.confussus, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));

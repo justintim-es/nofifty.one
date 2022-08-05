@@ -55,7 +55,8 @@ class Rp {
             fixumTransactions: fixumTxs,
             expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
             scans: [],
-            humanify: null
+            humanify: null,
+            cashEx: null
         );
         newThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort, idx])));
       }
@@ -160,7 +161,8 @@ class Rp {
           fixumTransactions: fixumTxs,
           expressiTransactions: [],
           scans: [],
-          humanify: null
+          humanify: null,
+          cashEx: null,
         );
         ReceivePort acciperePortus = ReceivePort();
         newThreads.add(await Isolate.spawn(Obstructionum.confussus, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
@@ -278,7 +280,8 @@ class Rp {
             fixumTransactions: fixumTxs,
             expressiTransactions: [],
             scans: [],
-            humanify: null
+            humanify: null,
+            cashEx: null
         );
         //the bug is that we add it to efectus threads
         // efectusThreads
