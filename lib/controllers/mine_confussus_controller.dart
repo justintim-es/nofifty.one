@@ -1,6 +1,8 @@
 import 'dart:isolate';
 import 'package:conduit/conduit.dart';
 import 'package:elliptic/elliptic.dart';
+import 'package:nofiftyone/models/cash_ex.dart';
+import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/nofiftyone.dart';
 import 'package:nofiftyone/models/aboutconfig.dart';
 import 'package:nofiftyone/models/exampla.dart';
@@ -75,6 +77,12 @@ class MineConfussusController extends ResourceController {
         numerus += BigInt.parse(nuschum.toString());
       }
       final obstructionumDifficultas = await Obstructionum.utDifficultas(directory);
+      List<Scan> praemium = priorObstructionum.interioreObstructionum.scans;
+      List<List<Scan>> scaschans = [];
+      List<Obstructionum> obss = await Utils.getObstructionums(directory);
+      for (Obstructionum obs in obss) {
+        scaschans.add(obs.interioreObstructionum.scans);
+      }
       InterioreObstructionum interiore = InterioreObstructionum.confussus(
         obstructionumDifficultas: obstructionumDifficultas.length,
         divisa: (numerus / await Obstructionum.utSummaDifficultas(directory)),
@@ -94,7 +102,7 @@ class MineConfussusController extends ResourceController {
         expressiTransactions: [],
         scans: p2p.scans,
         humanify: null,
-        cashEx: null
+        cashEx: CashEx.count(await Obstructionum.utObstructionumNumerus(directory), praemium, scaschans) 
       );
       ReceivePort acciperePortus = ReceivePort();
       confussuses.add(await Isolate.spawn(Obstructionum.confussus, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));

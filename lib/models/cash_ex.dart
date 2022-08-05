@@ -34,6 +34,10 @@ class CashEx {
     //     }
     //   }
     // }
+
+    for(int i = 0; i < scans.where((s) => s.isNotEmpty); i++) {
+      
+    }
     List<String> publics = [];
     List<List<Scan>> llscans = [];
     for (Scan praemium in praemia) {
