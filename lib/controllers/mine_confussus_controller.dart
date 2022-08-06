@@ -101,7 +101,7 @@ class MineConfussusController extends ResourceController {
         fixumTransactions: fixumTxs,
         expressiTransactions: [],
         scans: p2p.scans,
-        humanify: null,
+        humanify: Humanify.grab(p2p.humanifies),
         cashEx: CashEx.count(await Obstructionum.utObstructionumNumerus(directory), praemium, scaschans) 
       );
       ReceivePort acciperePortus = ReceivePort();

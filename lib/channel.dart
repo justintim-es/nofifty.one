@@ -108,7 +108,7 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/defensio-bid/:liber/:index/:probationem/[:gladiatorId]').link(() => DefensioBidController(directory!));
     router.route('/defensio/:index/:gladiatorId/[:liber]').link(() => DefensioController(directory!));
     router.route('/gladiators/[:publica]').link(() => GladiatorsController(directory!));
-    router.route('/mine-efectus/[:loop]').link(() => MineEfectusController(directory!, p2p!, aboutconfig!, propterIsolates, liberTxIsolates, fixumTxIsolates, isSalutaris, efectusThreads));
+    router.route('/mine-efectus/[:loop]').link(() => MineEfectusController(directory!, p2p!, aboutconfig!, propterIsolates, liberTxIsolates, fixumTxIsolates, isSalutaris, efectusThreads, humanifyIsolates));
     router.route('/mine-confussus').link(() => MineConfussusController(directory!, p2p!, aboutconfig!, isSalutaris, propterIsolates, liberTxIsolates, fixumTxIsolates, confussuses));
     router.route('/mine-expressi').link(() => MineExpressiController(directory!, p2p!, aboutconfig!, isSalutaris, propterIsolates, liberTxIsolates, fixumTxIsolates, expressiThreads));
     router.route('/network').link(() => NetworkController(p2p!));

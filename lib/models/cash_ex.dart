@@ -37,12 +37,18 @@ class CashEx {
         for (String key in maschap.keys) {
           outer:
           while(true) {
-            for (List<Scan> lscan in scans.reversed) {
-                maschap[key] = maschap[key] ?? BigInt.zero + BigInt.one;
-              if (lscan.any((ls) => ls.output.novus == key)) {
-              } else {
-              	break outer;
+            String prior = key;
+            if (scans.any((e) => e.any((i) => i.output.novus == prior))) {
+              for (List<Scan> sc in scans.where((element) => element.any((i) => i.output.novus == prior))) {
+                for (int i = 0; i < sc.length; i++) {
+                  maschap[prior] = maschap[prior] ?? BigInt.zero + BigInt.one;
+                  if (i == sc.length-1) {
+                    prior = sc[i].output.prior;
+                  }
+                } 
               }
+            } else {
+             break;	
             }
           } 
         }
