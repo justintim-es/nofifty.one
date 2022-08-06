@@ -148,6 +148,7 @@ class MineConfussusController extends ResourceController {
         confussuses.forEach((iso) => iso.kill(priority: Isolate.immediate));
         await obstructionum.salvare(directory);
         isSalutaris = false;
+        p2p.scans = [];
         // all we have to do is stop all threads
         //   Obstructionum obstructionum = nuntius;
         //   print(obstructionum.toJson());

@@ -21,7 +21,8 @@ class MineEfectusController extends ResourceController {
   Map<String, Isolate> liberTxIsolates;
   Map<String, Isolate> fixumTxIsolates;
   List<Isolate> efectusThreads;
-  MineEfectusController(this.directory, this.p2p, this.aboutconfig, this.propterIsolates, this.liberTxIsolates, this.fixumTxIsolates, this.isSalutaris, this.efectusThreads);
+  Map<String, Isolate> humanifyIsolates;
+  MineEfectusController(this.directory, this.p2p, this.aboutconfig, this.propterIsolates, this.liberTxIsolates, this.fixumTxIsolates, this.isSalutaris, this.efectusThreads, this.humanifyIsolates);
   
   @Operation.post('loop') 
   Future<Response> mine(@Bind.path('loop') String loop) async {
@@ -105,12 +106,14 @@ class MineEfectusController extends ResourceController {
           for (GladiatorOutput output in outputs) {
             gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());
           }
+          p2
           p2p.removePropters(gladiatorIds);
           p2p.removeLiberTxs(obstructionum.interioreObstructionum.liberTransactions.map((l) => l.interioreTransaction.id).toList());
           p2p.removeFixumTxs(obstructionum.interioreObstructionum.fixumTransactions.map((f) => f.interioreTransaction.id).toList());
           ReceivePort rp = ReceivePort();
           p2p.syncBlocks.forEach((e) => e.kill(priority: Isolate.immediate));
           p2p.syncBlocks.add(await Isolate.spawn(P2P.syncBlock, List<dynamic>.from([obstructionum, p2p.sockets, directory, '${aboutconfig.internumIp!}:{$aboutconfig.p2pPortus!}'])));
+          
           await obstructionum.salvare(directory);
           p2p.expressieTxs = [];
           if(loop == 'true') {

@@ -26,40 +26,30 @@ class CashEx {
     outputs = List<CashExOutput>.from(jsoschon['outputs'].map((o) => CashExOutput.fromJson(o as Map<String, dynamic>)) as Iterable<dynamic>);
 
   factory CashEx.count(List<int> numerus, List<Scan> praemia,  List<List<Scan>> scans) {
-    // List<List<Scan>> llscans = [];
-    // for(Scan praemium in praemia) {
-    //   for (int b = numerus.length-1; b >= 0; b--) {
-    //     for (int bb = numerus[b]; bb >= 0; bb--) {
-    //       llscans.add(scans.where((element) => element.output.prior == praemium.output.novus).toList());
-    //     }
-    //   }
-    // }
-    List<CashExOutput> outs = [];
-    for (Scan praemium in praemia) {
-      for (List<Scan> lscan in scans.where((element) => element.isNotEmpty)) {
-      while(lscan.any((ls) => ls.output.novus == praemium.output.prior)) {
-        for (Scan ss in lscan.where((s) => s.output.novus == praemium.output.prior)) {
-          outs.add(CashExOutput(ss.output.prior, BigInt.one));
+    	Map<String, BigInt> maschap = Map();
+        for (Scan praemium in praemia) {
+          for (List<Scan> lscan in scans) {
+            if (lscan.any((ls) => ls.output.novus == praemium.output.prior)) {
+              maschap[praemium.output.prior] = maschap[praemium.output.prior] ?? BigInt.zero + BigInt.one;
+            }
+          }
         }
-      }
-    }
-
-    // List<String> publics = [];
-    // List<List<Scan>> llscans = [];
-    // for (Scan praemium in praemia) {
-    //   scans.forEach((element) => llscans.add(element.where((element) =>  element.output.prior == praemium.output.novus).toList()));
-    //   publics.add(praemium.output.prior);
-    // }
-    // List<List<Scan>> lliscans = [];
-    // for (int i = 0; i < llscans.length; i++) {
-    //   for (int ii = 0 ; ii < llscans[i].length; ii ++) {
-    //     scans.forEach((element) => lliscans.add(element.where((eschel) => llscans[i][ii].output.prior == eschel.output.novus).toList()));
-    //   }
-    // }
-    // List<CashExOutput> outputs = [];
-    // for (int i = 0; i < publics.length && i < lliscans.length; i++) {
-    //   outputs.add(CashExOutput(publics[i], BigInt.from(lliscans[i].length)));
-    // }
-    return CashEx(outs);
+        for (String key in maschap.keys) {
+          outer:
+          while(true) {
+            for (List<Scan> lscan in scans.reversed) {
+                maschap[key] = maschap[key] ?? BigInt.zero + BigInt.one;
+              if (lscan.any((ls) => ls.output.novus == key)) {
+              } else {
+              	break outer;
+              }
+            }
+          } 
+        }
+        List<CashExOutput> outs = [];
+        for (String key in maschap.keys) {
+          outs.add(CashExOutput(key, maschap[key]!));
+        }
+        return CashEx(outs);
   }
 }

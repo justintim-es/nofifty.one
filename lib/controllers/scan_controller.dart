@@ -20,7 +20,7 @@ class ScanController extends ResourceController {
   
   @Operation.get()
   Future<Response> hash() async {
-    List<List<Scan>> scans = [];
+      List<List<Scan>> scans = [];
     List<Obstructionum> obss = await Utils.getObstructionums(directory);
     List<Humanify?> humanifies = [];
     for (Obstructionum obs in obss) {
@@ -29,17 +29,21 @@ class ScanController extends ResourceController {
     }
     // all we have to count down is the last humanify
     List<ScanInput?> inputs = [];
-    for (List<Scan> scaschans in scans) {
-      // inputs.addAll(scaschans.map((e) => e.input));
-      //be ware we need imputs when whe have to give the passphrase index
-      inputs.addAll(p2p.scans.map((s) => s.input));
-    }
-    int index = humanifies.lastIndexWhere((element) => !inputs.any((i) => i?.probationem == element?.probationem) && element != null);
+    inputs.addAll(p2p.scans.map((e) => e.input));
+    // for (List<Scan> scaschans in scans) {
+    //   // inputs.addAll(scaschans.map((e) => e.input));
+    //   //be ware we need imputs when whe have to give the passphrase index
+    //   inputs.addAll(p2p.scans.map((s) => s.input));
+    // }
+
+    final filtered = humanifies.where((h) => h != null).where((element) => !inputs.any((i) => i?.probationem == element?.probationem));
     
     return Response.ok({
-      "probationem": humanifies[index]!.probationem,
-      "index": index
+      "probationem": filtered.last!.probationem,
+      "index": filtered.length
     });
+  
+  //  }
     // List<List<ScanInput?>> inputs = [];
     // for (List<Scan> scaschans in scans) {
     //   inputs.add(scaschans.map((e) => e.input).toList());
