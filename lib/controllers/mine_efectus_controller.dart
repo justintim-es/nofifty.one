@@ -106,7 +106,10 @@ class MineEfectusController extends ResourceController {
           for (GladiatorOutput output in outputs) {
             gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());
           }
-          p2
+          humanifyIsolates[obstructionum.interioreObstructionum.humanify?.interiore.id]?.kill(priority: Isolate.immediate);
+          if(obstructionum.interioreObstructionum.humanify != null) {
+            p2p.removeHumanify(obstructionum.interioreObstructionum.humanify!.interiore.id);
+          }
           p2p.removePropters(gladiatorIds);
           p2p.removeLiberTxs(obstructionum.interioreObstructionum.liberTransactions.map((l) => l.interioreTransaction.id).toList());
           p2p.removeFixumTxs(obstructionum.interioreObstructionum.fixumTransactions.map((f) => f.interioreTransaction.id).toList());

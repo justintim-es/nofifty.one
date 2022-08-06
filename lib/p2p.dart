@@ -82,6 +82,7 @@ class SocketsP2PMessage extends P2PMessage {
   };
 }
 
+
 class ScanP2PMessage extends P2PMessage {
   Scan scan;
   ScanP2PMessage(this.scan, String type, String from): super(type, from);
@@ -91,19 +92,6 @@ class ScanP2PMessage extends P2PMessage {
   @override
   Map<String, dynamic> toJson() => {
     'scan': scan.toJson(),
-    'type': type,
-    'from': from
-  };
-}
-class PropterP2PMessage extends P2PMessage {
-  Propter propter;
-  PropterP2PMessage(this.propter, String type, String from): super(type, from);
-  PropterP2PMessage.fromJson(Map<String, dynamic> jsoschon):
-    propter = Propter.fromJson(jsoschon['propter'] as Map<String, dynamic>),
-    super.fromJson(jsoschon);
-  @override
-  Map<String, dynamic> toJson() => {
-    'propter': propter.toJson(),
     'type': type,
     'from': from
   };
@@ -123,6 +111,27 @@ class HumanifyP2PMessage extends P2PMessage {
   };
 
 }
+class RemoveHumanifyP2PMessage extends P2PMessage {
+  String id;
+  RemoveHumanifyP2PMessage(this.id, String type, String from): super(type, from);
+  RemoveHumanifyP2PMessage.fromJson(Map<String, dynamic> jsoschon):  
+    id = jsoschon['id'].toString(),
+    super.fromJson(jsoschon);
+}
+class PropterP2PMessage extends P2PMessage {
+  Propter propter;
+  PropterP2PMessage(this.propter, String type, String from): super(type, from);
+  PropterP2PMessage.fromJson(Map<String, dynamic> jsoschon):
+    propter = Propter.fromJson(jsoschon['propter'] as Map<String, dynamic>),
+    super.fromJson(jsoschon);
+  @override
+  Map<String, dynamic> toJson() => {
+    'propter': propter.toJson(),
+    'type': type,
+    'from': from
+  };
+}
+
 class RemoveProptersP2PMessage extends P2PMessage {
   List<String> ids;
   RemoveProptersP2PMessage(this.ids, String type, String from): super(type, from);
@@ -261,6 +270,10 @@ class P2P {
             humanifies.add(hp2pm.humanify);
             client.destroy();
           } 
+        } else if (msg.type == 'remove-humanify') {
+          RemoveHumanifyP2PMessage rhp2pm = RemoveHumanifyP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          humanifies.removeWhere((h) => h.interiore.id == rhp2pm.id);
+          client.destroy();
         } else if (msg.type == 'scan') {
           ScanP2PMessage sp2pm = ScanP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
           List<Obstructionum> obss = await Utils.getObstructionums(dir);
@@ -751,6 +764,13 @@ class P2P {
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
       soschock.write(json.encode(RemoveProptersP2PMessage(ids, 'remove-propters', from).toJson()));
+    }
+  }
+  void removeHumanify(String id) async {
+    humanifies.removeWhere((h) => h.interiore.id == id);
+    for (String socket in sockets) {
+      Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+      soschock.write(json.encode(RemoveHumanifyP2PMessage(id, 'remove-humanify', from).toJson()));
     }
   }
   void removeLiberTxs(List<String> ids) async {
