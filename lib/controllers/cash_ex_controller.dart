@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:nofiftyone/models/obstructionum.dart';
 import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/models/utils.dart';
+import 'package:collection/collection.dart';
 import 'package:nofiftyone/nofiftyone.dart';
 
 class CashExController extends ResourceController {
@@ -14,21 +15,37 @@ class CashExController extends ResourceController {
   Future<Response> balance(@Bind.path('publica') String publica) async {
     List<Obstructionum> lo = await Utils.getObstructionums(directory);
     List<List<Scan>> llscanm = lo.map((e) => e.interioreObstructionum.scans).toList();
-    List<List<Scan>> llscanwa = llscanm.where((element) => element.any((a) => a.output.prior == publica)).toList(); 
-    List<String> novuses = [];
-    List<Scan> ex = [];
-    while(true) {
-      llscanwa.map((m) => m.map((e) => e.output.novus)).forEach(novuses.addAll);
-      ex = [];
-      llscanm.where((w) => w.any((a) => novuses.contains(a.output.prior))).forEach(ex.addAll);
-      novuses.replaceRange(0, novuses.length, ex.map((e) => e.output.novus));
-      if(novuses.isEmpty) {
-        break;
-      }
+    Scan? scanBasis = llscanm.firstWhereOrNull((element) => element.any((a) => a.output.prior == publica))?[0];
+    if (scanBasis == null) {
+    	return Response.badRequest(body: "No prior found get scanned first!");
     }
-    return Response.ok(ex);
-
-    
+    List<String> novuses = [scanBasis!.output.prior];
+    List<String> todos = [];
+    int statera = 0;
+    while (true) {
+    	todos = [];
+    	print('novuses');
+    	print(novuses);
+		for(String novus in novuses) {
+			llscanm.where((w) => w.any((a)=> a.output.prior == novus)).map((m) => m.map((im) => im.output.novus)).forEach((element) {
+				todos.addAll(element);
+				statera++;
+			});		
+		}
+		if(todos.isEmpty) {
+			break;
+		}
+		print('todos');
+		print(todos);
+		novuses = [];
+		for (String todo in todos) {
+			llscanm.where((w) => w.any((a) => a.output.prior == todo)).map((m) => m.map((im) => im.output.novus)).forEach((element) {
+				novuses.addAll(element);
+				statera++;
+			});
+		}
+	}
+    return Response.ok(statera);
   }
 
   

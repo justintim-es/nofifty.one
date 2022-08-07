@@ -29,6 +29,7 @@ import 'package:nofiftyone/controllers/numerus_controller.dart';
 import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/p2p.dart';
 import 'package:nofiftyone/controllers/probationem_controller.dart';
+import 'package:nofiftyone/controllers/cash_ex_controller.dart';
 
 /// This type initializes an application.
 ///
@@ -128,7 +129,7 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/scan/[:probationem]').link(() => ScanController(directory!, p2p!));
     router.route('/hash/:index/:answer').link(() => HashController());
     router.route('/answer').link(() => AnswerController(directory!, p2p!));
-
+	router.route('/cash-ex/:publica').link(() => CashExController(directory!));
     return router;
   }
 }
