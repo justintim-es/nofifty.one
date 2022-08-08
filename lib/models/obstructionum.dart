@@ -81,7 +81,6 @@ class InterioreObstructionum {
     required this.expressiTransactions,
     required this.scans,
     required this.humanify,
-    required this.cashEx
   }): indicatione = DateTime.now().microsecondsSinceEpoch, nonce = BigInt.zero {
     BigInt total = BigInt.zero;
     for (int nuschum in obstructionumNumerus) {
@@ -130,7 +129,6 @@ class InterioreObstructionum {
     required this.expressiTransactions,
     required this.scans,
     required this.humanify,
-    required this.cashEx
   }):
       generare = Generare.EFECTUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -156,8 +154,7 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
-    required this.humanify,
-    required this.cashEx
+    required this.humanify
   }):
       generare = Generare.CONFUSSUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -182,7 +179,6 @@ class InterioreObstructionum {
     required this.expressiTransactions,
     required this.scans,
     required this.humanify,
-    required this.cashEx
   }):
     generare = Generare.EXPRESSI,
     indicatione = DateTime.now().microsecondsSinceEpoch,
@@ -217,7 +213,7 @@ class InterioreObstructionum {
     'expressiTransactions': expressiTransactions.map((e) => e.toJson()).toList(),
     'scans': scans.map((e) => e.toJson()).toList(),
     'humanify': humanify?.toJson(),
-    'cashEx': cashEx?.toJson()
+    'cashEx': null
   };
   InterioreObstructionum.fromJson(Map jsoschon):
       generare = GenerareFromJson.fromJson(jsoschon['generare'].toString()) as Generare,
@@ -242,7 +238,7 @@ class InterioreObstructionum {
       expressiTransactions = List<Transaction>.from(jsoschon['expressiTransactions'].map((e) => Transaction.fromJson(e as Map<String, dynamic>)) as Iterable<dynamic>),
       scans = List<Scan>.from(jsoschon['scans'].map((s) => Scan.fromJson(s as Map<String, dynamic>)) as Iterable<dynamic>),
       humanify = jsoschon['humanify'] != null ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null,
-      cashEx = jsoschon['cashEx'] != null ? CashEx.fromJson(jsoschon['cashEx'] as Map<String, dynamic>) : null; 
+      cashEx = null;
 }
 
 

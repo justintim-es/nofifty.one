@@ -14,13 +14,13 @@ class CashExController extends ResourceController {
   Directory directory;
   CashExController(this.directory);
 
-  @Operation.get('publica')
-  Future<Response> balance(@Bind.path('publica') String publica) async {
+  @Operation.get('key')
+  Future<Response> balance(@Bind.path('key') String publica) async {
     BigInt statera = await staschatescherascha(publica);
-    return Response.ok(statera);
+    return Response.ok(statera.toString());
   }
-  @Operation.post('privatus')
-  Future<Response> ex(@Bind.path('privatus') String privatus) async {
+  @Operation.post('key')
+  Future<Response> ex(@Bind.path('key') String privatus) async {
     List<Obstructionum> los = await Utils.getObstructionums(directory);
     List<List<Scan>> llscans = los.map((e) => e.interioreObstructionum.scans).toList();
     List<Scan> lscans = [];

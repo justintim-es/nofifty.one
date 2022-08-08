@@ -129,7 +129,7 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/scan/[:probationem]').link(() => ScanController(directory!, p2p!));
     router.route('/hash/:index/:answer').link(() => HashController());
     router.route('/answer').link(() => AnswerController(directory!, p2p!));
-	router.route('/cash-ex/:publica').link(() => CashExController(directory!));
+	router.route('/cash-ex/:key').link(() => CashExController(directory!));
     return router;
   }
 }

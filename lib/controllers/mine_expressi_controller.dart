@@ -109,7 +109,6 @@ class MineExpressiController extends ResourceController {
           expressiTransactions: [],
           scans: [],
           humanify: null,
-          cashEx: null,
       );
       expressiThreads.add(await Isolate.spawn(Obstructionum.expressi, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
       acciperePortus.listen((nuntius) async {

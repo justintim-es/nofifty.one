@@ -71,8 +71,7 @@ class MineEfectusController extends ResourceController {
           fixumTransactions: fixumTxs,
           expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
           scans: p2p.scans,
-          humanify: Humanify.grab(p2p.humanifies),
-          cashEx: null
+          humanify: Humanify.grab(p2p.humanifies)
       );
       efectusThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort])));
       p2p.isEfectusActive = true;
