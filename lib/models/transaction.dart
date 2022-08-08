@@ -27,14 +27,17 @@ class TransactionInput {
 class TransactionOutput {
   final String publicKey;
   final BigInt nof;
-  TransactionOutput(this.publicKey, this.nof);
+  final int? cashExIndex;
+  TransactionOutput(this.publicKey, this.nof, this.cashExIndex);
   Map<String, dynamic> toJson() => {
     'publicKey': publicKey,
-    'nof': nof.toString()
+    'nof': nof.toString(),
+    'cashExIndex': cashExIndex,
   };
   TransactionOutput.fromJson(Map<String, dynamic> jsoschon):
       publicKey = jsoschon['publicKey'].toString(),
-      nof = BigInt.parse(jsoschon['nof'].toString());
+      nof = BigInt.parse(jsoschon['nof'].toString()),
+      cashExIndex = jsoschon['cashExIndex'] != null ? int.parse(jsoschon['cashExIndex'].toString()) : null;
 }
 
 

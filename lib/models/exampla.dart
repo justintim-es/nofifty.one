@@ -51,7 +51,7 @@ class SubmittereTransaction extends Serializable {
   void readFromMap(Map<String, dynamic> map) {
     to = map['to'].toString();
     from = map['from'].toString();
-    nof = BigInt.from(num.parse(map['nof'].toStringAsExponential()));
+    nof = BigInt.from(num.parse(map['nof'].toStringAsExponential() as String));
   }
 
   APISchemaObject documentSchema(APIDocumentContext context) {

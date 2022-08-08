@@ -25,7 +25,7 @@ class Rp {
       List<Propter> propters = [];
       propters.addAll(Gladiator.grab(priorObstructionum.interioreObstructionum.propterDifficultas, p2p.propters));
       List<Transaction> liberTxs = [];
-      liberTxs.add(Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(aboutconfig.publicaClavis!, Constantes.obstructionumPraemium)], Utils.randomHex(32))));
+      liberTxs.add(Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(aboutconfig.publicaClavis!, Constantes.obstructionumPraemium, null)], Utils.randomHex(32))));
       liberTxs.addAll(Transaction.grab(priorObstructionum.interioreObstructionum.liberDifficultas, p2p.liberTxs));
       List<Transaction> fixumTxs = [];
       fixumTxs.addAll(Transaction.grab(priorObstructionum.interioreObstructionum.fixumDifficultas, p2p.fixumTxs));
@@ -35,6 +35,20 @@ class Rp {
       BigInt numerus = BigInt.zero; 
       for (int nuschum in await Obstructionum.utObstructionumNumerus(directory)) {
         numerus += BigInt.parse(nuschum.toString());
+      }
+      final cex = priorObstructionum.interioreObstructionum.cashExs;
+      for (int i = 0; i < cex.length; i++) {
+        fixumTxs.add(
+          Transaction(
+            Constantes.cashEx, 
+            InterioreTransaction(
+              false,
+              [],
+              [TransactionOutput(cex[i].interioreCashEx.signumCashEx.public, cex[i].interioreCashEx.signumCashEx.nof, i)],
+              Utils.randomHex(32)
+            )
+          )
+        );
       }
       ReceivePort acciperePortus = ReceivePort();
       for (int i = 0; i < efectusThreads.length; i++) {
@@ -144,6 +158,20 @@ class Rp {
       BigInt numerus = BigInt.zero; 
       for (int nuschum in await Obstructionum.utObstructionumNumerus(directory)) {
         numerus += BigInt.parse(nuschum.toString());
+      }
+      final cex = priorObstructionum.interioreObstructionum.cashExs;
+      for (int i = 0; i < cex.length; i++) {
+        fixumTxs.add(
+          Transaction(
+            Constantes.cashEx, 
+            InterioreTransaction(
+              false,
+              [],
+              [TransactionOutput(cex[i].interioreCashEx.signumCashEx.public, cex[i].interioreCashEx.signumCashEx.nof, i)],
+              Utils.randomHex(32)
+            )
+          )
+        );
       }
       for (int i = 0; i < confussuses.length; i++) {
         confussuses[i].kill();
@@ -265,6 +293,20 @@ class Rp {
       BigInt numerus = BigInt.zero;
       for (int nuschum in await Obstructionum.utObstructionumNumerus(directory)) {
         numerus += BigInt.parse(nuschum.toString());
+      }
+      final cex = priorObstructionum.interioreObstructionum.cashExs;
+      for (int i = 0; i < cex.length; i++) {
+        fixumTxs.add(
+          Transaction(
+            Constantes.cashEx, 
+            InterioreTransaction(
+              false,
+              [],
+              [TransactionOutput(cex[i].interioreCashEx.signumCashEx.public, cex[i].interioreCashEx.signumCashEx.nof, i)],
+              Utils.randomHex(32)
+            )
+          )
+        );
       }
       for (int i = 0; i < expressiThreads.length; i++) {
         expressiThreads[i].kill();

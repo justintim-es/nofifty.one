@@ -515,6 +515,11 @@ class P2P {
                 for (Transaction tx in op2pm.obstructionum.interioreObstructionum.fixumTransactions) {
                   if (tx.probationem == 'transform') {
                       transformOutputs.add(tx);
+                  } else if (tx.probationem == Constantes.cashEx) {
+                    if (obs.interioreObstructionum.cashExs[tx.interioreTransaction.outputs.first.cashExIndex!].interioreCashEx.signumCashEx.nof != tx.interioreTransaction.outputs.first.nof) {
+                      print('invalid cashex');
+                      return;
+                    }
                   } else {
                     if (!await tx.validateFixum(dir) || !tx.validateProbationem()) {
                       print("Corrumpere negotium in obstructionum");

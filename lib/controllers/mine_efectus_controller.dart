@@ -51,7 +51,7 @@ class MineEfectusController extends ResourceController {
       List<Propter> propters = [];
       propters.addAll(Gladiator.grab(priorObstructionum.interioreObstructionum.propterDifficultas, p2p.propters));
       List<Transaction> liberTxs = [];
-      liberTxs.add(Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(aboutconfig.publicaClavis!, Constantes.obstructionumPraemium)], Utils.randomHex(32))));
+      liberTxs.add(Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(aboutconfig.publicaClavis!, Constantes.obstructionumPraemium, null)], Utils.randomHex(32))));
       liberTxs.addAll(Transaction.grab(priorObstructionum.interioreObstructionum.liberDifficultas, p2p.liberTxs));
       List<Transaction> fixumTxs = [];
       fixumTxs.addAll(Transaction.grab(priorObstructionum.interioreObstructionum.fixumDifficultas, p2p.fixumTxs));
@@ -65,6 +65,20 @@ class MineEfectusController extends ResourceController {
       List<Obstructionum> obss = await Utils.getObstructionums(directory);
       for (Obstructionum obs in obss) {
         scaschans.add(obs.interioreObstructionum.scans);
+      }
+      final cex = priorObstructionum.interioreObstructionum.cashExs;
+      for (int i = 0; i < cex.length; i++) {
+        fixumTxs.add(
+          Transaction(
+            Constantes.cashEx, 
+            InterioreTransaction(
+              false,
+              [],
+              [TransactionOutput(cex[i].interioreCashEx.signumCashEx.public, cex[i].interioreCashEx.signumCashEx.nof, i)],
+              Utils.randomHex(32)
+            )
+          )
+        );
       }
       InterioreObstructionum interiore = InterioreObstructionum.efectus(
           obstructionumDifficultas: obstructionumDifficultas.length,

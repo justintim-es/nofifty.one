@@ -112,7 +112,7 @@ class InterioreObstructionum {
       defensio = Utils.randomHex(1),
       priorProbationem = '',
       gladiator = Gladiator(null, List<GladiatorOutput>.from([GladiatorOutput(List<Propter>.from([Propter.incipio(InterioreRationem.incipio(producentis))]))]), Utils.randomHex(32)),
-      liberTransactions = List<Transaction>.from([Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(producentis, Constantes.obstructionumPraemium)], Utils.randomHex(32)))]),
+      liberTransactions = List<Transaction>.from([Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(producentis, Constantes.obstructionumPraemium, null)], Utils.randomHex(32)))]),
       fixumTransactions = [],
       expressiTransactions = [],
       cashExs = [],
@@ -523,7 +523,15 @@ class Obstructionum {
   static Future<BigInt> accipereForumCap(Directory directory) async {
     List<Obstructionum> obss = await getBlocks(directory);
     final obstructionumPraemium = obss.where((obs) => obs.interioreObstructionum.generare == Generare.INCIPIO || obs.interioreObstructionum.generare == Generare.EFECTUS).length;
-    return (BigInt.parse(obstructionumPraemium.toString()) * Constantes.obstructionumPraemium);
+    List<List<CashEx>> llcashExs = obss.map((o) => o.interioreObstructionum.cashExs).toList();
+    List<CashEx> lcashex = [];
+    llcashExs.forEach(lcashex.addAll);
+    BigInt exes = BigInt.zero;
+    for (CashEx cx in lcashex) {
+      exes += cx.interioreCashEx.signumCashEx.nof;
+    }
+
+    return (BigInt.parse(obstructionumPraemium.toString()) * Constantes.obstructionumPraemium) + exes;
   }
   static Future<BigInt> accipereForumCapLiberFixum(bool liber, Directory directory) async {
       List<Tuple3<int, String, TransactionOutput>> outputs = [];
@@ -550,6 +558,17 @@ class Obstructionum {
       BigInt forumCap = BigInt.zero;
       for (TransactionOutput output in outputs.map((output) => output.item3)) {
         forumCap += output.nof;
+      }
+      if (!liber) {
+        List<Obstructionum> obss = await getBlocks(directory);
+        List<List<CashEx>> llcashExs = obss.map((o) => o.interioreObstructionum.cashExs).toList();
+        List<CashEx> lcashex = [];
+        llcashExs.forEach(lcashex.addAll);
+        BigInt exes = BigInt.zero;
+        for (CashEx cx in lcashex) {
+          exes += cx.interioreCashEx.signumCashEx.nof;
+        }
+        return forumCap + exes;
       }
       return forumCap;
   }

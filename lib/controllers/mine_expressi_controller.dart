@@ -107,6 +107,20 @@ class MineExpressiController extends ResourceController {
       for (int nuschum in await Obstructionum.utObstructionumNumerus(directory)) {
         numerus += BigInt.parse(nuschum.toString());
       }
+      final cex = priorObstructionum.interioreObstructionum.cashExs;
+      for (int i = 0; i < cex.length; i++) {
+        fixumTxs.add(
+          Transaction(
+            Constantes.cashEx, 
+            InterioreTransaction(
+              false,
+              [],
+              [TransactionOutput(cex[i].interioreCashEx.signumCashEx.public, cex[i].interioreCashEx.signumCashEx.nof, i)],
+              Utils.randomHex(32)
+            )
+          )
+        );
+      }
       InterioreObstructionum interiore = InterioreObstructionum.expressi(
           obstructionumDifficultas: obstructionumDifficultas.length,
           divisa: (numerus / await Obstructionum.utSummaDifficultas(directory)),

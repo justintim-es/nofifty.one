@@ -199,7 +199,7 @@ class Pera {
         List<TransactionOutput> outputs = [];
         List<TransactionInput> inputs = [];
         for(Tuple3<int, String, TransactionOutput> out in outs) {
-          outputs.add(TransactionOutput(publica, out.item3.nof));
+          outputs.add(TransactionOutput(publica, out.item3.nof, null));
           inputs.add(TransactionInput(out.item1, Utils.signum(PrivateKey.fromHex(Pera.curve(), privatus), out.item3), out.item2));
         }
         return Tuple2<InterioreTransaction, InterioreTransaction>(
@@ -303,14 +303,14 @@ class Pera {
      for (Tuple3<int, String, TransactionOutput> inOut in outs) {
         inputs.add(TransactionInput(inOut.item1, Utils.signum(privatus, inOut.item3), inOut.item2));
         if (inOut.item3.nof < implere) {
-           outputs.add(TransactionOutput(to, inOut.item3.nof));
+           outputs.add(TransactionOutput(to, inOut.item3.nof, null));
            implere -= inOut.item3.nof;
         } else if (inOut.item3.nof > implere) {
-           outputs.add(TransactionOutput(to, implere));
-           outputs.add(TransactionOutput(privatus.publicKey.toHex(), inOut.item3.nof - implere));
+           outputs.add(TransactionOutput(to, implere, null));
+           outputs.add(TransactionOutput(privatus.publicKey.toHex(), inOut.item3.nof - implere, null));
            break;
         } else {
-           outputs.add(TransactionOutput(to, implere));
+           outputs.add(TransactionOutput(to, implere, null));
            break;
         }
      }
