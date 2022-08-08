@@ -192,7 +192,7 @@ class Transaction {
   };
   static List<Transaction> grab(int difficultas, List<Transaction> txs) {
     List<Transaction> reditus = [];
-    for (int i = 64; i >= difficultas; i--) {
+    for (int i = 128; i >= difficultas; i--) {
       if (txs.any((tx) => tx.probationem.startsWith('0' * i))) {
         if (reditus.length < Constantes.txCaudice) {
           reditus.addAll(txs.where((tx) => tx.probationem.startsWith('0' * i) && !reditus.contains(tx)));

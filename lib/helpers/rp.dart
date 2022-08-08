@@ -4,9 +4,12 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:elliptic/elliptic.dart';
+import 'package:nofiftyone/models/cash_ex.dart';
 import 'package:nofiftyone/models/gladiator.dart';
+import 'package:nofiftyone/models/humanify.dart';
 import 'package:nofiftyone/models/obstructionum.dart';
 import 'package:nofiftyone/models/pera.dart';
+import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/models/transaction.dart';
 import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/p2p.dart';
@@ -46,6 +49,8 @@ class Rp {
             propterDifficultas: Obstructionum.acciperePropterDifficultas(priorObstructionum),
             liberDifficultas: Obstructionum.accipereLiberDifficultas(priorObstructionum),
             fixumDifficultas: Obstructionum.accipereFixumDifficultas(priorObstructionum),
+            scanDifficultas: Obstructionum.accipereScanDifficultas(priorObstructionum),
+            cashExDifficultas: Obstructionum.accipereCashExDifficultas(priorObstructionum),
             summaObstructionumDifficultas: await Obstructionum.utSummaDifficultas(directory),
             obstructionumNumerus: await Obstructionum.utObstructionumNumerus(directory),
             producentis: aboutconfig.publicaClavis!,
@@ -54,7 +59,8 @@ class Rp {
             liberTransactions: liberTxs,
             fixumTransactions: fixumTxs,
             expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
-            scans: [],
+            scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
+            cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs),
             humanify: null,
         );
         newThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort, idx])));
@@ -153,14 +159,17 @@ class Rp {
           propterDifficultas: Obstructionum.acciperePropterDifficultas(priorObstructionum),
           liberDifficultas: Obstructionum.accipereLiberDifficultas(priorObstructionum),
           fixumDifficultas: Obstructionum.accipereFixumDifficultas(priorObstructionum),
+          cashExDifficultas: Obstructionum.accipereCashExDifficultas(priorObstructionum),
+          scanDifficultas: Obstructionum.accipereScanDifficultas(priorObstructionum),
           producentis: aboutconfig.publicaClavis!,
           priorProbationem: priorObstructionum.probationem,
           gladiator: Gladiator(GladiatorInput(gladiatorIndex, Utils.signum(PrivateKey.fromHex(Pera.curve(), gladiatorPrivateKey), gladiatorToAttack), gladiatorId), [], Utils.randomHex(32)),
           liberTransactions: liberTxs,
           fixumTransactions: fixumTxs,
           expressiTransactions: [],
-          scans: [],
-          humanify: null,
+          scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
+          cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs),
+          humanify: Humanify.grab(p2p.humanifies)
         );
         ReceivePort acciperePortus = ReceivePort();
         newThreads.add(await Isolate.spawn(Obstructionum.confussus, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
@@ -269,6 +278,8 @@ class Rp {
             propterDifficultas: Obstructionum.acciperePropterDifficultas(priorObstructionum),
             liberDifficultas: Obstructionum.accipereLiberDifficultas(priorObstructionum),
             fixumDifficultas: Obstructionum.accipereFixumDifficultas(priorObstructionum),
+            scanDifficultas: Obstructionum.accipereScanDifficultas(priorObstructionum),
+            cashExDifficultas: Obstructionum.accipereCashExDifficultas(priorObstructionum),
             summaObstructionumDifficultas: await Obstructionum.utSummaDifficultas(directory),
             obstructionumNumerus: await Obstructionum.utObstructionumNumerus(directory),
             producentis: aboutconfig.publicaClavis!,
@@ -277,8 +288,9 @@ class Rp {
             liberTransactions: liberTxs,
             fixumTransactions: fixumTxs,
             expressiTransactions: [],
-            scans: [],
-            humanify: null,
+            scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
+            humanify: Humanify.grab(p2p.humanifies),
+            cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs)
         );
         //the bug is that we add it to efectus threads
         // efectusThreads

@@ -49,6 +49,8 @@ class NofiftyoneChannel extends ApplicationChannel {
   Map<String, Isolate> liberTxIsolates = Map();
   Map<String, Isolate> fixumTxIsolates = Map();
   Map<String, Isolate> humanifyIsolates = Map();
+  Map<String, Isolate> scanIsolates = Map();
+  Map<String, Isolate> cashExIsolates = Map();
   List<Isolate> efectusThreads = [];
   List<Isolate> confussuses = [];
   List<Isolate> expressiThreads = [];
@@ -109,9 +111,21 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/defensio-bid/:liber/:index/:probationem/[:gladiatorId]').link(() => DefensioBidController(directory!));
     router.route('/defensio/:index/:gladiatorId/[:liber]').link(() => DefensioController(directory!));
     router.route('/gladiators/[:publica]').link(() => GladiatorsController(directory!));
-    router.route('/mine-efectus/[:loop]').link(() => MineEfectusController(directory!, p2p!, aboutconfig!, propterIsolates, liberTxIsolates, fixumTxIsolates, isSalutaris, efectusThreads, humanifyIsolates));
-    router.route('/mine-confussus').link(() => MineConfussusController(directory!, p2p!, aboutconfig!, isSalutaris, propterIsolates, liberTxIsolates, fixumTxIsolates, confussuses));
-    router.route('/mine-expressi').link(() => MineExpressiController(directory!, p2p!, aboutconfig!, isSalutaris, propterIsolates, liberTxIsolates, fixumTxIsolates, expressiThreads));
+    router.route('/mine-efectus/[:loop]').link(() => MineEfectusController(
+      directory!, 
+      p2p!, 
+      aboutconfig!, 
+      propterIsolates, 
+      liberTxIsolates, 
+      fixumTxIsolates, 
+      isSalutaris, 
+      efectusThreads, 
+      humanifyIsolates,
+      scanIsolates,
+      cashExIsolates
+    ));
+    router.route('/mine-confussus').link(() => MineConfussusController(directory!, p2p!, aboutconfig!, isSalutaris, propterIsolates, liberTxIsolates, fixumTxIsolates, confussuses, humanifyIsolates, scanIsolates, cashExIsolates));
+    router.route('/mine-expressi').link(() => MineExpressiController(directory!, p2p!, aboutconfig!, isSalutaris, propterIsolates, liberTxIsolates, fixumTxIsolates, expressiThreads, humanifyIsolates, scanIsolates, cashExIsolates));
     router.route('/network').link(() => NetworkController(p2p!));
     router.route('/numerus').link(() => NumerusController(directory!));
     router.route('/rationem/[:identitatis]').link(() => RationemController(directory!, p2p!, propterIsolates));
@@ -128,8 +142,8 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/respondere/:answer').link(() => RespondereController());
     router.route('/scan/[:probationem]').link(() => ScanController(directory!, p2p!));
     router.route('/hash/:index/:answer').link(() => HashController());
-    router.route('/answer').link(() => AnswerController(directory!, p2p!));
-	router.route('/cash-ex/:key').link(() => CashExController(directory!));
+    router.route('/answer').link(() => AnswerController(directory!, p2p!, scanIsolates));
+	  router.route('/cash-ex/:key').link(() => CashExController(directory!, p2p!, cashExIsolates));
     return router;
   }
 }

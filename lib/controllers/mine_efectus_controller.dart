@@ -22,7 +22,20 @@ class MineEfectusController extends ResourceController {
   Map<String, Isolate> fixumTxIsolates;
   List<Isolate> efectusThreads;
   Map<String, Isolate> humanifyIsolates;
-  MineEfectusController(this.directory, this.p2p, this.aboutconfig, this.propterIsolates, this.liberTxIsolates, this.fixumTxIsolates, this.isSalutaris, this.efectusThreads, this.humanifyIsolates);
+  Map<String, Isolate> scanIsolates;
+  Map<String, Isolate> cashExIsolates;
+  MineEfectusController(
+    this.directory, 
+    this.p2p, 
+    this.aboutconfig, 
+    this.propterIsolates, 
+    this.liberTxIsolates, 
+    this.fixumTxIsolates, 
+    this.isSalutaris, 
+    this.efectusThreads, 
+    this.humanifyIsolates, 
+    this.scanIsolates, 
+    this.cashExIsolates);
   
   @Operation.post('loop') 
   Future<Response> mine(@Bind.path('loop') String loop) async {
@@ -62,6 +75,8 @@ class MineEfectusController extends ResourceController {
           propterDifficultas: Obstructionum.acciperePropterDifficultas(priorObstructionum),
           liberDifficultas: Obstructionum.accipereLiberDifficultas(priorObstructionum),
           fixumDifficultas: Obstructionum.accipereFixumDifficultas(priorObstructionum),
+          scanDifficultas: Obstructionum.accipereScanDifficultas(priorObstructionum),
+          cashExDifficultas: Obstructionum.accipereCashExDifficultas(priorObstructionum),
           summaObstructionumDifficultas: await Obstructionum.utSummaDifficultas(directory),
           obstructionumNumerus: await Obstructionum.utObstructionumNumerus(directory),
           producentis: aboutconfig.publicaClavis!,
@@ -70,8 +85,9 @@ class MineEfectusController extends ResourceController {
           liberTransactions: liberTxs,
           fixumTransactions: fixumTxs,
           expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
-          scans: p2p.scans,
-          humanify: Humanify.grab(p2p.humanifies)
+          scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
+          humanify: Humanify.grab(p2p.humanifies),
+          cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs)
       );
       efectusThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort])));
       p2p.isEfectusActive = true;
@@ -109,6 +125,9 @@ class MineEfectusController extends ResourceController {
           if(obstructionum.interioreObstructionum.humanify != null) {
             p2p.removeHumanify(obstructionum.interioreObstructionum.humanify!.interiore.id);
           }
+          obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
+          obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
+
           p2p.removePropters(gladiatorIds);
           p2p.removeLiberTxs(obstructionum.interioreObstructionum.liberTransactions.map((l) => l.interioreTransaction.id).toList());
           p2p.removeFixumTxs(obstructionum.interioreObstructionum.fixumTransactions.map((f) => f.interioreTransaction.id).toList());

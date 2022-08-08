@@ -2,6 +2,8 @@ import 'package:conduit/conduit.dart';
 import 'dart:isolate';
 import 'package:conduit/conduit.dart';
 import 'package:elliptic/elliptic.dart';
+import 'package:nofiftyone/models/cash_ex.dart';
+import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/nofiftyone.dart';
 import 'package:nofiftyone/models/aboutconfig.dart';
 import 'package:nofiftyone/models/exampla.dart';
@@ -29,7 +31,22 @@ class MineExpressiController extends ResourceController {
   Map<String, Isolate> propterIsolates;
   Map<String, Isolate> liberTxIsolates;
   Map<String, Isolate> fixumTxIsolates;
-  MineExpressiController(this.directory, this.p2p, this.aboutconfig, this.isSalutaris, this.propterIsolates, this.liberTxIsolates, this.fixumTxIsolates, this.expressiThreads);
+  Map<String, Isolate> humanifyIsolates;
+  Map<String, Isolate> scanIsolates;
+  Map<String, Isolate> cashExIsolates;
+  MineExpressiController(
+    this.directory, 
+    this.p2p, 
+    this.aboutconfig, 
+    this.isSalutaris, 
+    this.propterIsolates, 
+    this.liberTxIsolates, 
+    this.fixumTxIsolates, 
+    this.expressiThreads,
+    this.humanifyIsolates,
+    this.scanIsolates,
+    this.cashExIsolates
+    );
   @Operation.post()
   Future<Response> mine(@Bind.body() Confussus conf) async {
     if (!File('${directory.path}/${Constantes.fileNomen}0.txt').existsSync()) {
@@ -99,6 +116,8 @@ class MineExpressiController extends ResourceController {
           propterDifficultas: Obstructionum.acciperePropterDifficultas(priorObstructionum),
           liberDifficultas: Obstructionum.accipereLiberDifficultas(priorObstructionum),
           fixumDifficultas: Obstructionum.accipereFixumDifficultas(priorObstructionum),
+          scanDifficultas: Obstructionum.accipereScanDifficultas(priorObstructionum),
+          cashExDifficultas: Obstructionum.accipereCashExDifficultas(priorObstructionum),
           summaObstructionumDifficultas: await Obstructionum.utSummaDifficultas(directory),
           obstructionumNumerus: await Obstructionum.utObstructionumNumerus(directory),
           producentis: aboutconfig.publicaClavis!,
@@ -107,7 +126,8 @@ class MineExpressiController extends ResourceController {
           liberTransactions: liberTxs,
           fixumTransactions: fixumTxs,
           expressiTransactions: [],
-          scans: [],
+          scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
+          cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs),
           humanify: null,
       );
       expressiThreads.add(await Isolate.spawn(Obstructionum.expressi, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
@@ -152,6 +172,14 @@ class MineExpressiController extends ResourceController {
         for (GladiatorOutput output in outputs) {
           gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());
         }
+        humanifyIsolates[obstructionum.interioreObstructionum.humanify?.interiore.id]?.kill(priority: Isolate.immediate);
+        if(obstructionum.interioreObstructionum.humanify != null) {
+          p2p.removeHumanify(obstructionum.interioreObstructionum.humanify!.interiore.id);
+        }
+        obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
+        obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
+
+
         p2p.removePropters(gladiatorIds);
         p2p.removeLiberTxs(obstructionum.interioreObstructionum.liberTransactions.map((l) => l.interioreTransaction.id).toList());
         p2p.removeFixumTxs(obstructionum.interioreObstructionum.fixumTransactions.map((f) => f.interioreTransaction.id).toList());

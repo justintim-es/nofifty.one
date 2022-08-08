@@ -10,6 +10,8 @@ class Constantes {
 
   static int txCaudice = 625;
 
+  static int scanCaudice = 510;
+
   static String fileNomen = "/caudices_";
 
   static String ardeat = 'ardeat';
@@ -17,4 +19,6 @@ class Constantes {
   static String txObstructionumPraemium = 'obstructionum praemium';
 
   static String transform = 'transform';
+
+  static String cashEx = 'cashEx';
 }

@@ -28,7 +28,23 @@ class MineConfussusController extends ResourceController {
   Map<String, Isolate> propterIsolates;
   Map<String, Isolate> liberTxIsolates;
   Map<String, Isolate> fixumTxIsolates;
-  MineConfussusController(this.directory, this.p2p, this.aboutconfig, this.isSalutaris, this.propterIsolates, this.liberTxIsolates, this.fixumTxIsolates, this.confussuses);
+  Map<String, Isolate> humanifyIsolates;
+  Map<String, Isolate> scanIsolates;
+  Map<String, Isolate> cashExIsolates;
+
+  MineConfussusController(
+    this.directory, 
+    this.p2p, 
+    this.aboutconfig, 
+    this.isSalutaris, 
+    this.propterIsolates, 
+    this.liberTxIsolates, 
+    this.fixumTxIsolates, 
+    this.confussuses,
+    this.humanifyIsolates,
+    this.scanIsolates,
+    this.cashExIsolates
+  );
 
   @Operation.post()
   Future<Response> mine(@Bind.body() Confussus conf) async {
@@ -94,14 +110,17 @@ class MineConfussusController extends ResourceController {
         propterDifficultas: Obstructionum.acciperePropterDifficultas(priorObstructionum),
         liberDifficultas: Obstructionum.accipereLiberDifficultas(priorObstructionum),
         fixumDifficultas: Obstructionum.accipereFixumDifficultas(priorObstructionum),
+        scanDifficultas: Obstructionum.accipereScanDifficultas(priorObstructionum),
+        cashExDifficultas: Obstructionum.accipereCashExDifficultas(priorObstructionum),
         producentis: aboutconfig.publicaClavis!,
         priorProbationem: priorObstructionum.probationem,
         gladiator: Gladiator(GladiatorInput(conf.index!, Utils.signum(PrivateKey.fromHex(Pera.curve(), conf.privateKey!), gladiatorToAttack.outputs[conf.index!]), conf.gladiatorId!), [], Utils.randomHex(32)),
         liberTransactions: liberTxs,
         fixumTransactions: fixumTxs,
         expressiTransactions: [],
-        scans: p2p.scans,
-        humanify: null
+        scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
+        humanify: null,
+        cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs)
       );
       ReceivePort acciperePortus = ReceivePort();
       confussuses.add(await Isolate.spawn(Obstructionum.confussus, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
@@ -135,6 +154,13 @@ class MineConfussusController extends ResourceController {
         }
         obstructionum.interioreObstructionum.liberTransactions.map((e) => e.interioreTransaction.id).forEach((id) => liberTxIsolates[id]?.kill(priority: Isolate.immediate));
         obstructionum.interioreObstructionum.fixumTransactions.map((e) => e.interioreTransaction.id).forEach((id) => fixumTxIsolates[id]?.kill(priority: Isolate.immediate));
+        humanifyIsolates[obstructionum.interioreObstructionum.humanify?.interiore.id]?.kill(priority: Isolate.immediate);
+        if(obstructionum.interioreObstructionum.humanify != null) {
+          p2p.removeHumanify(obstructionum.interioreObstructionum.humanify!.interiore.id);
+        }
+        obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
+        obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
+
         List<String> gladiatorIds = [];
         for (GladiatorOutput output in outputs) {
           gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());

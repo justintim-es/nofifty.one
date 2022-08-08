@@ -45,6 +45,8 @@ class InterioreObstructionum {
   final int propterDifficultas;
   final int liberDifficultas;
   final int fixumDifficultas;
+  final int scanDifficultas;
+  final int cashExDifficultas;
   final BigInt summaObstructionumDifficultas;
   final BigInt forumCap;
   final BigInt liberForumCap;
@@ -58,8 +60,8 @@ class InterioreObstructionum {
   final List<Transaction> fixumTransactions;
   final List<Transaction> expressiTransactions;
   final List<Scan> scans;
+  final List<CashEx> cashExs;
   Humanify? humanify;
-  CashEx? cashEx;
   InterioreObstructionum({
     required this.generare,
     required this.obstructionumDifficultas,
@@ -71,6 +73,8 @@ class InterioreObstructionum {
     required this.propterDifficultas,
     required this.liberDifficultas,
     required this.fixumDifficultas,
+    required this.scanDifficultas,
+    required this.cashExDifficultas,
     required this.obstructionumNumerus,
     required this.defensio,
     required this.producentis,
@@ -80,6 +84,7 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
+    required this.cashExs,
     required this.humanify,
   }): indicatione = DateTime.now().microsecondsSinceEpoch, nonce = BigInt.zero {
     BigInt total = BigInt.zero;
@@ -95,6 +100,8 @@ class InterioreObstructionum {
       propterDifficultas = 0,
       liberDifficultas = 0,
       fixumDifficultas = 0,
+      scanDifficultas = 0,
+      cashExDifficultas = 0,
       indicatione = DateTime.now().microsecondsSinceEpoch,
       nonce = BigInt.zero,
       summaObstructionumDifficultas = BigInt.one,
@@ -108,7 +115,8 @@ class InterioreObstructionum {
       liberTransactions = List<Transaction>.from([Transaction(Constantes.txObstructionumPraemium, InterioreTransaction(true, [], [TransactionOutput(producentis, Constantes.obstructionumPraemium)], Utils.randomHex(32)))]),
       fixumTransactions = [],
       expressiTransactions = [],
-      scans = [Scan(output: ScanOutput(prior: '', novus: producentis), input: null)];
+      cashExs = [],
+      scans = [Scan(InterioreScan(output: ScanOutput(prior: '', novus: producentis), humanifyAnswer: null), '')];
 
   InterioreObstructionum.efectus({
     required this.obstructionumDifficultas,
@@ -120,6 +128,8 @@ class InterioreObstructionum {
     required this.propterDifficultas,
     required this.liberDifficultas,
     required this.fixumDifficultas,
+    required this.cashExDifficultas,
+    required this.scanDifficultas,
     required this.obstructionumNumerus,
     required this.producentis,
     required this.priorProbationem,
@@ -128,6 +138,7 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
+    required this.cashExs,
     required this.humanify,
   }):
       generare = Generare.EFECTUS,
@@ -146,6 +157,8 @@ class InterioreObstructionum {
     required this.propterDifficultas,
     required this.liberDifficultas,
     required this.fixumDifficultas,
+    required this.scanDifficultas,
+    required this.cashExDifficultas,
     required this.obstructionumNumerus,
     required this.producentis,
     required this.priorProbationem,
@@ -154,6 +167,7 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
+    required this.cashExs,
     required this.humanify
   }):
       generare = Generare.CONFUSSUS,
@@ -170,6 +184,8 @@ class InterioreObstructionum {
     required this.propterDifficultas,
     required this.liberDifficultas,
     required this.fixumDifficultas,
+    required this.cashExDifficultas,
+    required this.scanDifficultas,
     required this.obstructionumNumerus,
     required this.producentis,
     required this.priorProbationem,
@@ -178,6 +194,7 @@ class InterioreObstructionum {
     required this.fixumTransactions,
     required this.expressiTransactions,
     required this.scans,
+    required this.cashExs,
     required this.humanify,
   }):
     generare = Generare.EXPRESSI,
@@ -197,6 +214,8 @@ class InterioreObstructionum {
     'propterDifficultas': propterDifficultas,
     'liberDifficultas': liberDifficultas,
     'fixumDifficultas': fixumDifficultas,
+    'scanDifficultas': scanDifficultas,
+    'cashExDifficultas': cashExDifficultas,
     'indicatione': indicatione,
     'nonce': nonce.toString(),
     'summaObstructionumDifficultas': summaObstructionumDifficultas.toString(),
@@ -213,7 +232,7 @@ class InterioreObstructionum {
     'expressiTransactions': expressiTransactions.map((e) => e.toJson()).toList(),
     'scans': scans.map((e) => e.toJson()).toList(),
     'humanify': humanify?.toJson(),
-    'cashEx': null
+    'cashEx': cashExs.map((e) => e.toJson()).toList(),
   };
   InterioreObstructionum.fromJson(Map jsoschon):
       generare = GenerareFromJson.fromJson(jsoschon['generare'].toString()) as Generare,
@@ -222,6 +241,8 @@ class InterioreObstructionum {
       divisa = double.parse(jsoschon['divisa'].toString()),
       liberDifficultas = int.parse(jsoschon['liberDifficultas'].toString()),
       fixumDifficultas = int.parse(jsoschon['fixumDifficultas'].toString()),
+      cashExDifficultas = int.parse(jsoschon['cashExDifficultas'].toString()),
+      scanDifficultas = int.parse(jsoschon['scanDifficultas'].toString()),
       indicatione = int.parse(jsoschon['indicatione'].toString()),
       nonce = BigInt.parse(jsoschon['nonce'].toString()),
       summaObstructionumDifficultas = BigInt.parse(jsoschon['summaObstructionumDifficultas'].toString()),
@@ -238,7 +259,7 @@ class InterioreObstructionum {
       expressiTransactions = List<Transaction>.from(jsoschon['expressiTransactions'].map((e) => Transaction.fromJson(e as Map<String, dynamic>)) as Iterable<dynamic>),
       scans = List<Scan>.from(jsoschon['scans'].map((s) => Scan.fromJson(s as Map<String, dynamic>)) as Iterable<dynamic>),
       humanify = jsoschon['humanify'] != null ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null,
-      cashEx = null;
+      cashExs = List<CashEx>.from(jsoschon['cashExs'].map((c) => CashEx.fromJson(c as Map<String, dynamic>)) as Iterable<dynamic>);
 }
 
 
@@ -478,6 +499,26 @@ class Obstructionum {
       }
     }
     return (priorObstructionum.interioreObstructionum.fixumDifficultas + 1);
+  }
+  static int accipereScanDifficultas(Obstructionum priorObstructionum) {
+    if (priorObstructionum.interioreObstructionum.scans.length < Constantes.scanCaudice) {
+      if (priorObstructionum.interioreObstructionum.scanDifficultas > 0) {
+        return priorObstructionum.interioreObstructionum.scanDifficultas -1;
+      } else {
+        return 0;
+      }
+    }
+    return priorObstructionum.interioreObstructionum.scanDifficultas + 1;
+  }
+  static int accipereCashExDifficultas(Obstructionum priorObstructionum) {
+    if (priorObstructionum.interioreObstructionum.cashExs.length < Constantes.scanCaudice) {
+      if (priorObstructionum.interioreObstructionum.cashExDifficultas > 0) {
+        return priorObstructionum.interioreObstructionum.cashExDifficultas -1;
+      } else {
+        return 0;
+      }
+    }
+    return priorObstructionum.interioreObstructionum.cashExDifficultas + 1;
   }
   static Future<BigInt> accipereForumCap(Directory directory) async {
     List<Obstructionum> obss = await getBlocks(directory);
