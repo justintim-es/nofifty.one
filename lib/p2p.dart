@@ -965,6 +965,7 @@ class P2P {
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
       List<List<String>> hashes = [];
+      sockets.remove(socket);
       // for (int i = 0; i < dir.listSync().length; i++) {
       //   hashes.add([]);
       //   List<String> lines = await Utils.fileAmnis(File('${dir.path}/${Constantes.fileNomen}$i.txt')).toList();
