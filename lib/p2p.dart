@@ -461,10 +461,10 @@ class P2P {
           print('recieved obstructionum ${op2pm.obstructionum.interioreObstructionum.obstructionumNumerus}');
           if (dir.listSync().isEmpty && op2pm.obstructionum.interioreObstructionum.generare == Generare.INCIPIO) {
             await op2pm.obstructionum.salvareIncipio(dir);
-            client.write(json.encode(RequestObstructionumP2PMessage([1], 'request-obstructionum', '${client.address.address}:${client.port}', sockets).toJson()));
+            client.write(json.encode(RequestObstructionumP2PMessage([1], 'request-obstructionum', '${client.address.address}:${client.port}', sockets.where((w) => w != from).toList()).toJson()));
             print('requested incipio block');
           } else if (dir.listSync().isEmpty && op2pm.obstructionum.interioreObstructionum.generare != Generare.INCIPIO) {
-              client.write(json.encode(RequestObstructionumP2PMessage([0], 'request-obstructionum', '${client.address.address}:${client.port}', sockets).toJson()));
+              client.write(json.encode(RequestObstructionumP2PMessage([0], 'request-obstructionum', '${client.address.address}:${client.port}', sockets.where((w) => w != from).toList()).toJson()));
               print('requested block one');
           } else {
             Obstructionum obs = await Utils.priorObstructionum(dir);
@@ -996,13 +996,13 @@ class P2P {
           if (rop2pm.numerus.last <= Constantes.maximeCaudicesFile) {
             String obs = await Utils.fileAmnis(caudices).elementAt(rop2pm.numerus.last);
             Obstructionum obsObs = Obstructionum.fromJson(json.decode(obs) as Map<String, dynamic>);
-            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', from, sockets).toJson()));
+            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', from, []).toJson()));
             print('sended block ${rop2pm.numerus}');
           } else {
             rop2pm.numerus.add(0);
             String obs = await Utils.fileAmnis(caudices).elementAt(rop2pm.numerus.last);
             Obstructionum obsObs = Obstructionum.fromJson(json.decode(obs) as Map<String, dynamic>);
-            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', from, sockets).toJson()));
+            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', from, []).toJson()));
             print('sended block ${rop2pm.numerus}');
           }
         } else if (p2pm.type == 'probationem') {
@@ -1050,7 +1050,7 @@ class P2P {
           // maby we dont need a proof like that because when it syncs it keeps on checking for a greater difficulty
           // once we sync the greater difficulty we can create a secret and resude that secret when we send a block with a lower difficulty
           // a different approach would be to delete so that total difficulty decreases too too messy
-          soschock.write(json.encode(ObstructionumP2PMessage(ropp2pm.secret, priorObstructionumProbationem, 'obstructionum', from, sockets).toJson()));          
+          soschock.write(json.encode(ObstructionumP2PMessage(ropp2pm.secret, priorObstructionumProbationem, 'obstructionum', from, []).toJson()));          
           print('sended ${priorObstructionumProbationem.interioreObstructionum.obstructionumNumerus}');
           // if (ropp2pm.probationem != priorObstructionum.interioreObstructionum.probationem) {
           //   soschock.write(json.encode(RequestProbationemP2PMessage(ropp2pm.index, 'request-probationem').toJson()));
