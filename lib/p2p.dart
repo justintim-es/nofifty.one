@@ -596,10 +596,10 @@ class P2P {
                     print("Insufficient obstructionum munera");
                     return;
                   }
-                  if (op2pm.obstructionum.interioreObstructionum.liberTransactions.where((liber) => liber.probationem == Constantes.transform).isNotEmpty) {
-                    print("Insufficient transforms");
-                    return;
-                  }
+                  // if (op2pm.obstructionum.interioreObstructionum.liberTransactions.where((liber) => liber.probationem == Constantes.transform).isNotEmpty) {
+                  //   print("Insufficient transforms");
+                  //   return;
+                  // }
                   if (!op2pm.obstructionum.probationem.startsWith('0' * op2pm.obstructionum.interioreObstructionum.obstructionumDifficultas)) {
                     print("Insufficient leading zeros");
                   }
@@ -651,10 +651,10 @@ class P2P {
                     print("Insufficiens ardet");
                     return;
                   }
-                  if (op2pm.obstructionum.interioreObstructionum.liberTransactions.where((liber) => liber.probationem == Constantes.transform).length != 1) {
-                    print("Insufficiens transforms");
-                    return;
-                  }
+                  // if (op2pm.obstructionum.interioreObstructionum.liberTransactions.where((liber) => liber.probationem == Constantes.transform).length != 1) {
+                  //   print("Insufficiens transforms");
+                  //   return;
+                  // }
                   Obstructionum utCognoscereObstructionum = obss.singleWhere((o) => o.interioreObstructionum.gladiator.id == op2pm.obstructionum.interioreObstructionum.gladiator.input!.gladiatorId);
                   GladiatorOutput utCognoscere = utCognoscereObstructionum.interioreObstructionum.gladiator.outputs[op2pm.obstructionum.interioreObstructionum.gladiator.input!.index];
                   if(
@@ -719,10 +719,10 @@ class P2P {
                     print("Insufficiens ardet");
                     return;
                   }
-                  if (op2pm.obstructionum.interioreObstructionum.liberTransactions.where((liber) => liber.probationem == Constantes.transform).length != 1) {
-                    print("Insufficiens transforms");
-                    return;
-                  }
+                    // if (op2pm.obstructionum.interioreObstructionum.liberTransactions.where((liber) => liber.probationem == Constantes.transform).length != 1) {
+                    //   print("Insufficiens transforms");
+                    //   return;
+                    // }
                   Obstructionum utCognoscereObstructionum = obss.singleWhere((o) => o.interioreObstructionum.gladiator.id == op2pm.obstructionum.interioreObstructionum.gladiator.input!.gladiatorId);
                   GladiatorOutput utCognoscere = utCognoscereObstructionum.interioreObstructionum.gladiator.outputs[op2pm.obstructionum.interioreObstructionum.gladiator.input!.index];
                   if(
@@ -764,6 +764,7 @@ class P2P {
                   confussusRp.sendPort.send("");
                 }
                 for (String socket in sockets.where((w) => !op2pm.nodes.contains(w))) {
+                  print('syncedthrough');
                   Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
                   soschock.write(json.encode(op2pm.toJson()));
                 } 
