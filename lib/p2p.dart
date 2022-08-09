@@ -317,6 +317,7 @@ class P2P {
         print(client.port);
         
         P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+        print(msg.toJson());
         if(msg.type == 'connect-bootnode') {
           ConnectBootnodeP2PMessage cbp2pm = ConnectBootnodeP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
           client.write(json.encode(OnConnectP2PMessage(sockets, propters, liberTxs, fixumTxs, 'on-connect', '${client.address.address}:${client.port}', sockets).toJson()));
@@ -398,6 +399,7 @@ class P2P {
           propters.removeWhere((p) => rpp2pm.ids.any((id) => id == p.interioreRationem.id));
           client.destroy();
             for (String socket in rpp2pm.nodes.where((w) => !sockets.contains(w))) {
+              rpp2pm.nodes.remove(socket);
               Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
               soschock.write(json.encode(rpp2pm.toJson()));
             } 
@@ -763,9 +765,12 @@ class P2P {
                 if (isConfussusActive) {
                   confussusRp.sendPort.send("");
                 }
+                
                 for (String socket in sockets.where((w) => !op2pm.nodes.contains(w))) {
                   print('syncedthrough');
+                  op2pm.nodes.remove(socket);
                   Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+
                   soschock.write(json.encode(op2pm.toJson()));
                 } 
                 // P2P.syncBlock(List<dynamic>.from([op2pm.obstructionum, sockets.length > 1 ? sockets.skip(sockets.indexOf('$from')).toList() : sockets, dir, '${client.address.address}:${client.port}']));
