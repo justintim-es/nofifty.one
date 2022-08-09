@@ -766,7 +766,7 @@ class P2P {
                   confussusRp.sendPort.send("");
                 }
                 
-                for (String socket in sockets.where((w) => !op2pm.nodes.contains(w))) {
+                for (String socket in sockets.where((w) => !op2pm.nodes.contains(w) && w != from)) {
                   print('syncedthrough');
                   op2pm.nodes.remove(socket);
                   Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
