@@ -232,7 +232,7 @@ class InterioreObstructionum {
     'expressiTransactions': expressiTransactions.map((e) => e.toJson()).toList(),
     'scans': scans.map((e) => e.toJson()).toList(),
     'humanify': humanify?.toJson(),
-    'cashEx': cashExs.map((e) => e.toJson()).toList(),
+    'cashExs': cashExs.map((e) => e.toJson()).toList(),
   };
   InterioreObstructionum.fromJson(Map jsoschon):
       generare = GenerareFromJson.fromJson(jsoschon['generare'].toString()) as Generare,
