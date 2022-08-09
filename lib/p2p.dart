@@ -810,6 +810,7 @@ class P2P {
             }
           }
         }
+        client.destroy();
         //  else if (msg.type == 'remove-obstructionum') {
         //     ProbationemP2PMessage pp2pm = ProbationemP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()));
         //     await Utils.removeObstructionumsUntilProbationem(pp2pm.probationem, dir);
