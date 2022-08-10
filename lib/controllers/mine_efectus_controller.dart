@@ -68,7 +68,7 @@ class MineEfectusController extends ResourceController {
       }
       final cex = priorObstructionum.interioreObstructionum.cashExs;
       for (int i = 0; i < cex.length; i++) {
-        fixumTxs.add(
+        liberTxs.add(
           Transaction(
             Constantes.cashEx, 
             InterioreTransaction(

@@ -559,7 +559,7 @@ class Obstructionum {
       for (TransactionOutput output in outputs.map((output) => output.item3)) {
         forumCap += output.nof;
       }
-      if (!liber) {
+      if (liber) {
         List<Obstructionum> obss = await getBlocks(directory);
         List<List<CashEx>> llcashExs = obss.map((o) => o.interioreObstructionum.cashExs).toList();
         List<CashEx> lcashex = [];
