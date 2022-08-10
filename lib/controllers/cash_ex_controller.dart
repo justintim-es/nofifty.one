@@ -36,9 +36,9 @@ class CashExController extends ResourceController {
       redempti += BigInt.one;
     }
     return Response.ok({
-      "redimitur": redimitur,
-      "redempti": redempti,
-      "total": statera
+      "redimitur": redimitur.toString(),
+      "redempti": redempti.toString(),
+      "total": statera.toString()
     });
 
   }

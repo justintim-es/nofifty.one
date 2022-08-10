@@ -30,7 +30,7 @@ class ScanController extends ResourceController {
     List<HumanifyAnswer?> inputs = [];
     inputs.addAll(p2p.scans.map((e) => e.interioreScan.humanifyAnswer));
     
-    final filtered = humanifies.where((element) => !inputs.any((i) => i?.probationem == element?.probationem));
+    final filtered = humanifies.where((element) => !inputs.any((i) => i?.probationem == element?.probationem) && element != null);
     if (filtered.isEmpty) {
       return Response.badRequest(body: "No humanify available, scan again");
     }
