@@ -24,15 +24,22 @@ class CashExController extends ResourceController {
     List<Obstructionum> lobstructionum = await Utils.getObstructionums(directory);
     List<List<CashEx>> llcashex = lobstructionum.map((e) => e.interioreObstructionum.cashExs).toList();
     BigInt statera = await staschatescherascha(publica);
+    BigInt redimitur = statera;
     List<List<BigInt>> exs = 
     llcashex.where((w) => w.any((a) => a.interioreCashEx.signumCashEx.public == publica))
     .map((m) => m.map((im) => im.interioreCashEx.signumCashEx.nof).toList()).toList();
     List<BigInt> exss = [];
+    BigInt redempti = BigInt.zero;
     exs.forEach(exss.addAll);
     for (BigInt ex in exss) {
-      statera -= ex;
+      redimitur -= ex;
+      redempti += BigInt.one;
     }
-    return Response.ok(statera);
+    return Response.ok({
+      "redimitur": redimitur,
+      "redempti": redempti,
+      "total": statera
+    });
 
   }
   @Operation.post('key')
@@ -66,7 +73,8 @@ class CashExController extends ResourceController {
     List<List<Scan>> llscanm = lo.map((e) => e.interioreObstructionum.scans).toList();
     Scan? scanBasis = llscanm.firstWhereOrNull((element) => element.any((a) => a.interioreScan.output.prior == basis))?[0];
     if (scanBasis == null) {
-    	throw(Error(message: "publica clavem non lustrabat lumine adhuc", english: 'Public key is not scanned yet', code: 0));
+    	return BigInt.zero;
+      throw(Error(message: "publica clavem non lustrabat lumine adhuc", english: 'Public key is not scanned yet', code: 0));
     }
 
     List<String> novuses = [scanBasis.interioreScan.output.prior];
