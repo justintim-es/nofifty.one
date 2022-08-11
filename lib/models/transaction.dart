@@ -46,29 +46,18 @@ class InterioreTransaction {
   final List<TransactionInput> inputs;
   final List<TransactionOutput> outputs;
   final String random;
-  final String id;
-  final String? expressi;
+  late String id;
+  String? expressi;
   BigInt nonce;
-  InterioreTransaction(this.liber, this.inputs, this.outputs, this.random):
-    nonce = BigInt.zero,
-    expressi = null,
-    id = HEX.encode(
-        sha512.convert(
-            utf8.encode(json.encode(inputs.map((e) => e.toJson()).toList())) +
-            utf8.encode(json.encode(outputs.map((e) => e.toJson()).toList())) +
-            utf8.encode(json.encode(random))
-        ).bytes
-    );
+  InterioreTransaction(this.liber, this.inputs, this.outputs, this.random): nonce = BigInt.zero {
+    expressi = null;
+    id = HEX.encode(sha512.convert(utf8.encode(json.encode(toJson()))).bytes);
+  }
+  
   InterioreTransaction.expressi(this.liber, this.inputs, this.outputs, this.random, this.expressi):
-    nonce = BigInt.zero,
-    id = HEX.encode(
-        sha512.convert(
-            utf8.encode(json.encode(inputs.map((e) => e.toJson()).toList())) +
-            utf8.encode(json.encode(outputs.map((e) => e.toJson()).toList())) +
-            utf8.encode(json.encode(random)) +
-            utf8.encode(json.encode(expressi))
-        ).bytes
-    );
+    nonce = BigInt.zero {
+      id = HEX.encode(sha512.convert(utf8.encode(json.encode(toJson()))).bytes);
+    }
   mine() {
     nonce += BigInt.one;
   }
