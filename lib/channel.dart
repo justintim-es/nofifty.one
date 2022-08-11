@@ -12,6 +12,7 @@ import 'package:nofiftyone/controllers/mine_efectus_controller.dart';
 import 'package:nofiftyone/controllers/mine_expressi_controller.dart';
 import 'package:nofiftyone/controllers/network_controller.dart';
 import 'package:nofiftyone/controllers/obstructionum_controller.dart';
+import 'package:nofiftyone/controllers/quaestio_controller.dart';
 import 'package:nofiftyone/controllers/rationem_controller.dart';
 import 'package:nofiftyone/controllers/rationem_stagnum_controller.dart';
 import 'package:nofiftyone/controllers/respondere_controller.dart';
@@ -144,6 +145,7 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/hash/:index/:answer').link(() => HashController());
     router.route('/answer').link(() => AnswerController(directory!, p2p!, scanIsolates));
 	  router.route('/cash-ex/:key').link(() => CashExController(directory!, p2p!, cashExIsolates));
+    router.route('/quaestio/:probationem').link(() => QuaestioController(directory!));
     return router;
   }
 }
