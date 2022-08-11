@@ -794,7 +794,7 @@ class P2P {
     fixumTxs.add(tx);
   }
   void syncScan(Scan scan) async {
-    if (scans.any((s) => s.interioreScan == scan.interioreScan.id)) {
+    if (scans.any((s) => s.interioreScan.id == scan.interioreScan.id)) {
       scans.removeWhere((s) => s.interioreScan.id == scan.interioreScan.id);
     }
     scans.add(scan);

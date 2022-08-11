@@ -12,6 +12,7 @@ import 'package:collection/collection.dart';
 import 'package:nofiftyone/nofiftyone.dart';
 import 'package:nofiftyone/models/errors.dart';
 import 'package:nofiftyone/p2p.dart';
+import 'package:nofiftyone/models/pera.dart';
 
 class CashExController extends ResourceController {
   Directory directory;
@@ -46,6 +47,13 @@ class CashExController extends ResourceController {
   Future<Response> ex(@Bind.path('key') String privatus) async {
     final PrivateKey pk = PrivateKey.fromHex(Pera.curve(), privatus);
     final String publicKey = pk.publicKey.toHex();
+      if (!await Pera.isPublicaClavisDefended(publicKey, directory)) {
+            return Response.badRequest(body: Error(
+                code: 0,
+                message: "accipientis non defenditur",
+                english: "public key is not defended"
+            ).toJson());
+        }
     final List<Obstructionum> lobstructionum = await Utils.getObstructionums(directory);
     List<List<CashEx>> llcashex = lobstructionum.map((e) => e.interioreObstructionum.cashExs).toList();
     BigInt statera = await staschatescherascha(publicKey);
@@ -54,8 +62,10 @@ class CashExController extends ResourceController {
     .map((m) => m.map((im) => im.interioreCashEx.signumCashEx.nof).toList()).toList();
     final List<BigInt> exss = [];
     exs.forEach(exss.addAll);
+    BigInt redempti = BigInt.zero;
     for (BigInt ex in exss) {
       statera -= ex;
+      redempti += ex;
     }
     final signumCashEx = SignumCashEx(nof: statera, public: publicKey, nonce: BigInt.zero);
     InterioreCashEx interiore = InterioreCashEx(signumCashEx: signumCashEx, signature: Utils.signum(pk, signumCashEx));
@@ -65,7 +75,7 @@ class CashExController extends ResourceController {
       p2p.syncCashEx(data as CashEx);
     });
     return Response.ok({
-      "statera": statera
+      "redempti": redempti.toString()
     });
   }
   Future<BigInt> staschatescherascha(String basis) async {
