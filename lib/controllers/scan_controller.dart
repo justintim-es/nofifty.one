@@ -36,7 +36,8 @@ class ScanController extends ResourceController {
     }
     return Response.ok({
       "probationem": filtered.last!.probationem,
-      "index": filtered.length
+      "index": filtered.length,
+      "quaestio": filtered.last!.interiore.quaestio
     });
  }
   @Operation.get('probationem')

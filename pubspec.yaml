@@ -32,6 +32,7 @@ dependencies:
   hex: ^0.2.0
   jaguar_jwt: ^3.0.0
   tuple: ^2.0.0
+  mime: any
 
 dev_dependencies:
   test: ^1.16.5
