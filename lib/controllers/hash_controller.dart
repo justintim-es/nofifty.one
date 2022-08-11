@@ -10,7 +10,7 @@ class HashController extends ResourceController {
   @Operation.get('index', 'answer')
   Future<Response> answer(@Bind.path('index') int index, @Bind.path('answer') String answer) async {
     Password password = Password(index, answer);
-    final crypted = HEX.encode(sha256.convert(utf8.encode(json.encode(password.toJson()))).bytes);
+    final crypted = HEX.encode(sha512.convert(utf8.encode(json.encode(password.toJson()))).bytes);
     return Response.ok(crypted);
   }
 }

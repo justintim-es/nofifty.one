@@ -31,7 +31,7 @@ class Propter {
   Propter(this.probationem, this.interioreRationem);
 
   Propter.incipio(this.interioreRationem):
-      probationem = HEX.encode(sha256.convert(utf8.encode(json.encode(interioreRationem.toJson()))).bytes);
+      probationem = HEX.encode(sha512.convert(utf8.encode(json.encode(interioreRationem.toJson()))).bytes);
   static void quaestum(List<dynamic> argumentis) {
     InterioreRationem interioreRationem = argumentis[0] as InterioreRationem;
     SendPort mitte = argumentis[1] as SendPort;
@@ -40,7 +40,7 @@ class Propter {
     while (true) {
       do {
         interioreRationem.mine();
-        probationem = HEX.encode(sha256.convert(utf8.encode(json.encode(interioreRationem.toJson()))).bytes);
+        probationem = HEX.encode(sha512.convert(utf8.encode(json.encode(interioreRationem.toJson()))).bytes);
       } while(!probationem.startsWith('0' * zeros));
       zeros += 1;
       mitte.send(Propter(probationem, interioreRationem));
@@ -54,7 +54,7 @@ class Propter {
       probationem = jsoschon['probationem'].toString(),
       interioreRationem = InterioreRationem.fromJson(jsoschon['interioreRationem'] as Map<String, dynamic>);
   bool isProbationem() {
-    if (probationem == HEX.encode(sha256.convert(utf8.encode(json.encode(interioreRationem.toJson()))).bytes)) {
+    if (probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(interioreRationem.toJson()))).bytes)) {
       return true;
     }
     return false;

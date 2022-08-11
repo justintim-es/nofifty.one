@@ -311,7 +311,7 @@ class P2P {
           client.destroy();
         } else if (msg.type == 'humanify') {
           HumanifyP2PMessage hp2pm = HumanifyP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
-          if (hp2pm.humanify.probationem == HEX.encode(sha256.convert(utf8.encode(json.encode(hp2pm.humanify.interiore.toJson()))).bytes)) {
+          if (hp2pm.humanify.probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(hp2pm.humanify.interiore.toJson()))).bytes)) {
             if (humanifies.any((h) => h.interiore.id == hp2pm.humanify.interiore.id)) {
               humanifies.removeWhere((element) => element.interiore.id == hp2pm.humanify.interiore.id);
             }
@@ -338,7 +338,7 @@ class P2P {
           client.destroy();
         } else if(msg.type == 'propter') {
           PropterP2PMessage pp2pm = PropterP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
-          if(pp2pm.propter.probationem == HEX.encode(sha256.convert(utf8.encode(json.encode(pp2pm.propter.interioreRationem.toJson()))).bytes)) {
+          if(pp2pm.propter.probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(pp2pm.propter.interioreRationem.toJson()))).bytes)) {
             if(propters.any((p) => p.interioreRationem.id == pp2pm.propter.interioreRationem.id)) {
               propters.removeWhere((p) => p.interioreRationem.id == pp2pm.propter.interioreRationem.id);
             }
