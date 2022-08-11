@@ -32,7 +32,7 @@ class ScanController extends ResourceController {
     
     final filtered = humanifies.where((element) => !inputs.any((i) => i?.probationem == element?.probationem) && element != null);
     if (filtered.isEmpty) {
-      return Response.badRequest(body: "No humanify available, scan again");
+      return Response.badRequest(body: "No humanify available, refresh");
     }
     return Response.ok({
       "probationem": filtered.last!.probationem,
