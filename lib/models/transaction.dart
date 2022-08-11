@@ -46,18 +46,14 @@ class InterioreTransaction {
   final List<TransactionInput> inputs;
   final List<TransactionOutput> outputs;
   final String random;
-  late String id;
+  final String id;
   String? expressi;
   BigInt nonce;
-  InterioreTransaction(this.liber, this.inputs, this.outputs, this.random): nonce = BigInt.zero {
-    expressi = null;
-    id = HEX.encode(sha512.convert(utf8.encode(json.encode(toJson()))).bytes);
-  }
+  InterioreTransaction(this.liber, this.inputs, this.outputs, this.random): nonce = BigInt.zero, id = Utils.randomHex(32);
   
   InterioreTransaction.expressi(this.liber, this.inputs, this.outputs, this.random, this.expressi):
-    nonce = BigInt.zero {
-      id = HEX.encode(sha512.convert(utf8.encode(json.encode(toJson()))).bytes);
-    }
+    nonce = BigInt.zero,
+    id = Utils.randomHex(32);
   mine() {
     nonce += BigInt.one;
   }
