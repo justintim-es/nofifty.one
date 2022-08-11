@@ -258,7 +258,7 @@ class InterioreObstructionum {
       fixumTransactions = List<Transaction>.from(jsoschon['fixumTransactions'].map((f) => Transaction.fromJson(f as Map<String, dynamic>)) as Iterable<dynamic>),
       expressiTransactions = List<Transaction>.from(jsoschon['expressiTransactions'].map((e) => Transaction.fromJson(e as Map<String, dynamic>)) as Iterable<dynamic>),
       scans = List<Scan>.from(jsoschon['scans'].map((s) => Scan.fromJson(s as Map<String, dynamic>)) as Iterable<dynamic>),
-      humanify = jsoschon['humanify'] != null ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null,
+      humanify = (jsoschon['humanify'] != null && jsoschon['humanify'] != 'null') ? Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>) : null,
       cashExs = List<CashEx>.from(jsoschon['cashExs'].map((c) => CashEx.fromJson(c as Map<String, dynamic>)) as Iterable<dynamic>);
 }
 

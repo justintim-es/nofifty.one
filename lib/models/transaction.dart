@@ -37,7 +37,7 @@ class TransactionOutput {
   TransactionOutput.fromJson(Map<String, dynamic> jsoschon):
       publicKey = jsoschon['publicKey'].toString(),
       nof = BigInt.parse(jsoschon['nof'].toString()),
-      cashExIndex = jsoschon['cashExIndex'] != null ? int.parse(jsoschon['cashExIndex'].toString()) : null;
+      cashExIndex = (jsoschon['cashExIndex'] != null && jsoschon['cashExIndex'] != 'null') ? int.parse(jsoschon['cashExIndex'].toString()) : null;
 }
 
 
