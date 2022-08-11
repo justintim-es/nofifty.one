@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'package:conduit/conduit.dart';
 import 'package:elliptic/elliptic.dart';
 import 'package:nofiftyone/models/cash_ex.dart';
+import 'package:nofiftyone/models/humanify.dart';
 import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/nofiftyone.dart';
 import 'package:nofiftyone/models/aboutconfig.dart';
@@ -109,7 +110,7 @@ class MineExpressiController extends ResourceController {
       }
       final cex = priorObstructionum.interioreObstructionum.cashExs;
       for (int i = 0; i < cex.length; i++) {
-        fixumTxs.add(
+        liberTxs.add(
           Transaction(
             Constantes.cashEx, 
             InterioreTransaction(
@@ -142,7 +143,7 @@ class MineExpressiController extends ResourceController {
           expressiTransactions: [],
           scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
           cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs),
-          humanify: null,
+          humanify: Humanify.grab(p2p.humanifies),
       );
       expressiThreads.add(await Isolate.spawn(Obstructionum.expressi, List<dynamic>.from([interiore, toCrack, acciperePortus.sendPort])));
       acciperePortus.listen((nuntius) async {

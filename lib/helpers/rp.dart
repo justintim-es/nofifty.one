@@ -75,7 +75,7 @@ class Rp {
             expressiTransactions: p2p.expressieTxs.where((tx) => liberTxs.any((l) => l.interioreTransaction.id == tx.interioreTransaction.expressi)).toList(),
             scans: Scan.grab(priorObstructionum.interioreObstructionum.scanDifficultas, p2p.scans),
             cashExs: CashEx.grab(priorObstructionum.interioreObstructionum.cashExDifficultas, p2p.cashExs),
-            humanify: null,
+            humanify: Humanify.grab(p2p.humanifies),
         );
         newThreads.add(await Isolate.spawn(Obstructionum.efectus, List<dynamic>.from([interiore, acciperePortus.sendPort, idx])));
       }
@@ -161,7 +161,7 @@ class Rp {
       }
       final cex = priorObstructionum.interioreObstructionum.cashExs;
       for (int i = 0; i < cex.length; i++) {
-        fixumTxs.add(
+        liberTxs.add(
           Transaction(
             Constantes.cashEx, 
             InterioreTransaction(
