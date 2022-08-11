@@ -744,7 +744,7 @@ class P2P {
         //     Obstructionum prior = await Utils.priorObstructionum(dir);
         //     client.write(json.encode(ProbationemP2PMessage(prior.interioreObstructionum.priorProbationem, 'probationem').toJson()));
         // }
-      });
+      }).onError(print);
     });
   }
   void connect(String bootnode, String me) async {
