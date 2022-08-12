@@ -777,6 +777,7 @@ class P2P {
     if (cashExs.any((element) => element.interioreCashEx.signumCashEx.id == cashEx.interioreCashEx.signumCashEx.id)) {
       cashExs.removeWhere((element) => element.interioreCashEx.signumCashEx.id == cashEx.interioreCashEx.signumCashEx.id);
     }
+    cashExs.add(cashEx);
   }
   void syncLiberTx(Transaction tx) async {
     if (liberTxs.any((t) => t.interioreTransaction.id == tx.interioreTransaction.id)) {

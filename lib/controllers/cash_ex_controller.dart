@@ -75,8 +75,12 @@ class CashExController extends ResourceController {
       p2p.syncCashEx(data as CashEx);
     });
     return Response.ok({
-      "redempti": redempti.toString()
+    	"redempti": redempti.toString()
     });
+  }
+  @Operation.get()
+  Future<Response> pool() async {
+  	return Response.ok(p2p.cashExs);
   }
   Future<BigInt> staschatescherascha(String basis) async {
     List<Obstructionum> lo = await Utils.getObstructionums(directory);
