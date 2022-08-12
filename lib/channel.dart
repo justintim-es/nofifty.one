@@ -80,10 +80,10 @@ class NofiftyoneChannel extends ApplicationChannel {
       p2p!.connect(aboutconfig!.bootnode!, '${aboutconfig!.externalIp!}:${aboutconfig!.p2pPortus}');
     }
     p2p!.efectusRp.listen((message) {
-      Rp.efectus(isSalutaris, efectusThreads, propterIsolates, liberTxIsolates, fixumTxIsolates, p2p!, aboutconfig!, directory!);
+      Rp.efectus(isSalutaris, efectusThreads, propterIsolates, liberTxIsolates, fixumTxIsolates, scanIsolates, cashExIsolates, p2p!, aboutconfig!, directory!);
     });
     p2p!.confussusRp.listen((message) {
-      Rp.confussus(isSalutaris, confussusGladiatorIndex, confussusGladiatorPrivateKey, confussusGladiatorId, confussuses, propterIsolates, liberTxIsolates, fixumTxIsolates, p2p!, aboutconfig!, directory!);
+      Rp.confussus(isSalutaris, confussusGladiatorIndex, confussusGladiatorPrivateKey, confussusGladiatorId, confussuses, propterIsolates, liberTxIsolates, fixumTxIsolates, scanIsolates, cashExIsolates, p2p!, aboutconfig!, directory!);
     });
     p2p!.expressiRp.listen((message) { 
       if(message ==  false) {
@@ -91,7 +91,7 @@ class NofiftyoneChannel extends ApplicationChannel {
         expressiThreads.forEach((e) => e.kill(priority: Isolate.immediate));
         return;
       }
-      Rp.expressi(isExpressi, isSalutaris, expressiGladiatorIndex, expressiGladiatorPrivateKey, expressiGladiatorId, confussuses, propterIsolates, liberTxIsolates, fixumTxIsolates, p2p!, aboutconfig!, directory!);
+      Rp.expressi(isExpressi, isSalutaris, expressiGladiatorIndex, expressiGladiatorPrivateKey, expressiGladiatorId, confussuses, propterIsolates, liberTxIsolates, fixumTxIsolates, scanIsolates, cashExIsolates, p2p!, aboutconfig!, directory!);
     });
   }
 

@@ -141,7 +141,8 @@ class MineEfectusController extends ResourceController {
           }
           obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
           obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
-
+		  p2p.removeScans(obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).toList());
+		  p2p.removeCashExs(obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).toList());
           p2p.removePropters(gladiatorIds);
           p2p.removeLiberTxs(obstructionum.interioreObstructionum.liberTransactions.map((l) => l.interioreTransaction.id).toList());
           p2p.removeFixumTxs(obstructionum.interioreObstructionum.fixumTransactions.map((f) => f.interioreTransaction.id).toList());
@@ -161,7 +162,6 @@ class MineEfectusController extends ResourceController {
             p2p.expressiRp.sendPort.send("update miner");
           }
           isSalutaris = false;
-          p2p.scans = [];
       });
       return Response.ok({
         "message": "coepi efectus miner",

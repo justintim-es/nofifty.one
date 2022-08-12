@@ -62,10 +62,8 @@ class CashExController extends ResourceController {
     .map((m) => m.map((im) => im.interioreCashEx.signumCashEx.nof).toList()).toList();
     final List<BigInt> exss = [];
     exs.forEach(exss.addAll);
-    BigInt redempti = BigInt.zero;
     for (BigInt ex in exss) {
       statera -= ex;
-      redempti += ex;
     }
     final signumCashEx = SignumCashEx(nof: statera, public: publicKey, nonce: BigInt.zero);
     InterioreCashEx interiore = InterioreCashEx(signumCashEx: signumCashEx, signature: Utils.signum(pk, signumCashEx));
@@ -75,7 +73,7 @@ class CashExController extends ResourceController {
       p2p.syncCashEx(data as CashEx);
     });
     return Response.ok({
-    	"redempti": redempti.toString()
+    	"redempti": statera.toString()
     });
   }
   @Operation.get()

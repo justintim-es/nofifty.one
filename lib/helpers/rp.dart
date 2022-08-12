@@ -20,7 +20,15 @@ import '../models/constantes.dart';
 import 'package:collection/collection.dart';
 
 class Rp {
-  static Future efectus(bool isSalutaris, List<Isolate> efectusThreads, Map<String, Isolate> propterIsolates, Map<String, Isolate> liberTxIsolates, Map<String, Isolate> fixumTxIsolates, P2P p2p, Aboutconfig aboutconfig, Directory directory) async {
+  static Future efectus(
+  bool isSalutaris, 
+  List<Isolate> efectusThreads, 
+  Map<String, Isolate> propterIsolates, 
+  Map<String, Isolate> liberTxIsolates, 
+  Map<String, Isolate> fixumTxIsolates,
+  Map<String, Isolate> scanIsolates,
+  Map<String, Isolate> cashExIsolates, 
+  P2P p2p, Aboutconfig aboutconfig, Directory directory) async {
       Obstructionum priorObstructionum = await Utils.priorObstructionum(directory);
       List<Propter> propters = [];
       propters.addAll(Gladiator.grab(priorObstructionum.interioreObstructionum.propterDifficultas, p2p.propters));
@@ -107,6 +115,10 @@ class Rp {
           }
           obstructionum.interioreObstructionum.liberTransactions.map((e) => e.interioreTransaction.id).forEach((id) => liberTxIsolates[id]?.kill(priority: Isolate.immediate));
           obstructionum.interioreObstructionum.fixumTransactions.map((e) => e.interioreTransaction.id).forEach((id) => fixumTxIsolates[id]?.kill(priority: Isolate.immediate));
+          obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
+                    obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
+                            p2p.removeScans(obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).toList());
+                            p2p.removeCashExs(obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).toList());
           List<String> gladiatorIds = [];
           for (GladiatorOutput output in outputs) {
             gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());
@@ -126,7 +138,20 @@ class Rp {
       });
   }
 
-  static Future confussus(bool isSalutaris, int gladiatorIndex, String gladiatorPrivateKey, String gladiatorId, List<Isolate> confussuses, Map<String, Isolate> propterIsolates, Map<String, Isolate> liberTxIsolates, Map<String, Isolate> fixumTxIsolates, P2P p2p, Aboutconfig aboutconfig, Directory directory) async {
+  static Future confussus(
+  bool isSalutaris, 
+  int gladiatorIndex, 
+  String gladiatorPrivateKey, 
+  String gladiatorId, 
+  List<Isolate> confussuses, 
+  Map<String, Isolate> propterIsolates, 
+  Map<String, Isolate> liberTxIsolates, 
+  Map<String, Isolate> fixumTxIsolates, 
+  Map<String, Isolate> scanIsolates,
+  Map<String, Isolate> cashExIsolates,
+  P2P p2p, 
+  Aboutconfig aboutconfig, 
+  Directory directory) async {
       List<Transaction> fixumTxs = [];
       List<Transaction> liberTxs = [];
       Obstructionum priorObstructionum = await Utils.priorObstructionum(directory);
@@ -227,6 +252,10 @@ class Rp {
           }
           obstructionum.interioreObstructionum.liberTransactions.map((e) => e.interioreTransaction.id).forEach((id) => liberTxIsolates[id]?.kill(priority: Isolate.immediate));
           obstructionum.interioreObstructionum.fixumTransactions.map((e) => e.interioreTransaction.id).forEach((id) => fixumTxIsolates[id]?.kill(priority: Isolate.immediate));
+          obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
+                    obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
+                            p2p.removeScans(obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).toList());
+                            p2p.removeCashExs(obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).toList());
           List<String> gladiatorIds = [];
           for (GladiatorOutput output in outputs) {
             gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());
@@ -250,7 +279,9 @@ class Rp {
     List<Isolate> expressiThreads, 
     Map<String, Isolate> propterIsolates, 
     Map<String, Isolate> liberTxIsolates, 
-    Map<String, Isolate> fixumTxIsolates, 
+    Map<String, Isolate> fixumTxIsolates,
+    Map<String, Isolate> scanIsolates,
+    Map<String, Isolate> cashExIsolates, 
     P2P p2p, 
     Aboutconfig aboutconfig, 
     Directory directory, 
@@ -378,6 +409,10 @@ class Rp {
           }
           obstructionum.interioreObstructionum.liberTransactions.map((e) => e.interioreTransaction.id).forEach((id) => liberTxIsolates[id]?.kill(priority: Isolate.immediate));
           obstructionum.interioreObstructionum.fixumTransactions.map((e) => e.interioreTransaction.id).forEach((id) => fixumTxIsolates[id]?.kill(priority: Isolate.immediate));
+          obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
+                    obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
+                            p2p.removeScans(obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).toList());
+                            p2p.removeCashExs(obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).toList());
           List<String> gladiatorIds = [];
           for (GladiatorOutput output in outputs) {
             gladiatorIds.addAll(output.rationem.map((r) => r.interioreRationem.id).toList());

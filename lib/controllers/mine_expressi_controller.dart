@@ -193,7 +193,8 @@ class MineExpressiController extends ResourceController {
         }
         obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).forEach((id) => cashExIsolates[id]?.kill(priority: Isolate.immediate));
         obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).forEach((id) => scanIsolates[id]?.kill(priority: Isolate.immediate));
-
+	 p2p.removeScans(obstructionum.interioreObstructionum.scans.map((s) => s.interioreScan.id).toList());
+        p2p.removeCashExs(obstructionum.interioreObstructionum.cashExs.map((c) => c.interioreCashEx.signumCashEx.id).toList());
 
         p2p.removePropters(gladiatorIds);
         p2p.removeLiberTxs(obstructionum.interioreObstructionum.liberTransactions.map((l) => l.interioreTransaction.id).toList());
