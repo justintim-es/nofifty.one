@@ -17,6 +17,7 @@ import 'package:nofiftyone/controllers/rationem_controller.dart';
 import 'package:nofiftyone/controllers/rationem_stagnum_controller.dart';
 import 'package:nofiftyone/controllers/respondere_controller.dart';
 import 'package:nofiftyone/controllers/scan_controller.dart';
+import 'package:nofiftyone/controllers/scans_controller.dart';
 import 'package:nofiftyone/controllers/statera_controller.dart';
 import 'package:nofiftyone/controllers/transaction_controller.dart';
 import 'package:nofiftyone/controllers/transaction_expressi_controller.dart';
@@ -146,6 +147,7 @@ class NofiftyoneChannel extends ApplicationChannel {
     router.route('/answer').link(() => AnswerController(directory!, p2p!, scanIsolates));
 	  router.route('/cash-ex/[:key]').link(() => CashExController(directory!, p2p!, cashExIsolates));
     router.route('/quaestio/:probationem').link(() => QuaestioController(directory!));
+    router.route('/scans').link(() => ScansController(p2p!));
     return router;
   }
 }

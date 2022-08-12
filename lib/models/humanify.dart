@@ -31,7 +31,7 @@ class InterioreHumanify {
     nonce = BigInt.zero, 
     id = Utils.randomHex(32),
     responderes = [] {
-      for (int i = 0; i < 510; i++) {
+      for (int i = 0; i < 51; i++) {
         final pw = Password(i, respondere);
         responderes.add(DBCrypt().hashpw(HEX.encode(sha512.convert(utf8.encode(json.encode(pw.toJson()))).bytes), DBCrypt().gensalt()));
       }
