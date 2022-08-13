@@ -289,10 +289,11 @@ class P2P {
       client.listen((data) async {
         print(client.address.address);
         print(client.port);
-        
-        P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
-        print(msg.toJson());
-        if(msg.type == 'connect-bootnode') {
+        try {
+            P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+            print(msg.toJson());
+
+                  if(msg.type == 'connect-bootnode') {
           ConnectBootnodeP2PMessage cbp2pm = ConnectBootnodeP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
           client.write(json.encode(OnConnectP2PMessage(sockets, propters, liberTxs, fixumTxs, 'on-connect', '${client.address.address}:${client.port}').toJson()));
           // client.destroy();
@@ -749,6 +750,11 @@ class P2P {
             }
           }
         }
+        } catch (err, s) {
+          print(err);
+          print(s);
+        }       
+
         // client.destroy();
         //  else if (msg.type == 'remove-obstructionum') {
         //     ProbationemP2PMessage pp2pm = ProbationemP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()));
