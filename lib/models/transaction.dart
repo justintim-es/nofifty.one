@@ -33,7 +33,7 @@ class TransactionOutput {
     'publicKey': publicKey,
     'nof': nof.toString(),
     'cashExIndex': cashExIndex,
-  };
+  }..removeWhere((key, value) => value == null);
   TransactionOutput.fromJson(Map<String, dynamic> jsoschon):
       publicKey = jsoschon['publicKey'].toString(),
       nof = BigInt.parse(jsoschon['nof'].toString()),
@@ -65,7 +65,7 @@ class InterioreTransaction {
     'id': id,
     'nonce': nonce.toString(),
     'expressi': expressi
-  };
+  }..removeWhere((key, value) => value == null);
   InterioreTransaction.fromJson(Map<String, dynamic>jsoschon):
       liber = jsoschon['liber'] as bool,
       inputs = List<TransactionInput>.from(jsoschon['inputs'].map((i) => TransactionInput.fromJson(i as Map<String, dynamic>)) as Iterable<dynamic>),

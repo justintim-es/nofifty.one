@@ -105,7 +105,7 @@ class Gladiator {
       'outputs': outputs.map((o) => o.toJson()).toList(),
       'random': random,
       'id': id
-    };
+    }..removeWhere((key, value) => value == null);
     Gladiator.fromJson(Map<String, dynamic> jsoschon):
       input = jsoschon['input'] != null ?  GladiatorInput.fromJson(jsoschon['input'] as Map) : null,
       outputs = List<GladiatorOutput>.from(jsoschon['outputs'].map((o) => GladiatorOutput.fromJson(o as Map<String, dynamic>)) as Iterable<dynamic>),

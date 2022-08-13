@@ -86,7 +86,7 @@ class Humanify {
   }
   static Humanify? grab(List<Humanify> humanifies) {
     Humanify? reditus;
-    for (int i = 64; i >= 0; i--) {
+    for (int i = 128; i >= 0; i--) {
       if(humanifies.any((element) => element.probationem.startsWith('0' * i))) {
         reditus = humanifies.firstWhere((element) => element.probationem.startsWith('0' * i));
         break;

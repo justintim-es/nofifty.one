@@ -52,7 +52,7 @@ class InterioreObstructionum {
   final BigInt liberForumCap;
   final BigInt fixumForumCap;
   final List<int> obstructionumNumerus;
-  final String? defensio;
+  String? defensio;
   final String producentis;
   final String priorProbationem;
   final Gladiator gladiator;
@@ -172,8 +172,7 @@ class InterioreObstructionum {
   }):
       generare = Generare.CONFUSSUS,
       indicatione = DateTime.now().microsecondsSinceEpoch,
-      nonce = BigInt.zero,
-      defensio = null;
+      nonce = BigInt.zero;
   InterioreObstructionum.expressi({
     required this.obstructionumDifficultas,
     required this.summaObstructionumDifficultas,
@@ -199,8 +198,7 @@ class InterioreObstructionum {
   }):
     generare = Generare.EXPRESSI,
     indicatione = DateTime.now().microsecondsSinceEpoch,
-    nonce = BigInt.zero,
-    defensio = null;
+    nonce = BigInt.zero;
 
   mine() {
     indicatione = DateTime.now().microsecondsSinceEpoch;
@@ -233,7 +231,7 @@ class InterioreObstructionum {
     'scans': scans.map((e) => e.toJson()).toList(),
     'humanify': humanify?.toJson(),
     'cashExs': cashExs.map((e) => e.toJson()).toList(),
-  };
+  }..removeWhere((key, value) => value == null);
   InterioreObstructionum.fromJson(Map jsoschon):
       generare = GenerareFromJson.fromJson(jsoschon['generare'].toString()) as Generare,
       obstructionumDifficultas = int.parse(jsoschon['obstructionumDifficultas'].toString()),

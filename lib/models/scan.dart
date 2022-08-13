@@ -47,7 +47,7 @@ class InterioreScan {
     'humanifyAnswer': humanifyAnswer?.toJson(),
     'nonce': nonce.toString(),
     'id': id
-  };
+  }..removeWhere((key, value) => value == null);
   InterioreScan.fromJson(Map<String, dynamic> map):
     output = ScanOutput.fromJson(map['output'] as Map<String, dynamic>),
     humanifyAnswer = map['humanifyAnswer'] != null ? HumanifyAnswer.fromJson(map['humanifyAnswer'] as Map<String, dynamic>) : null,
