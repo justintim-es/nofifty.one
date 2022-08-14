@@ -286,14 +286,14 @@ class P2P {
     print(serverSocket.address);
     print(serverSocket.port);
     serverSocket.listen((client) {
-      client.listen((data) async {
+      utf8.decoder.bind(client).listen((data) async {
         print(client.address.address);
         print(client.port);
             P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
             print(msg.toJson());
 
           if(msg.type == 'connect-bootnode') {
-          ConnectBootnodeP2PMessage cbp2pm = ConnectBootnodeP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          ConnectBootnodeP2PMessage cbp2pm = ConnectBootnodeP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           client.write(json.encode(OnConnectP2PMessage(sockets, propters, liberTxs, fixumTxs, 'on-connect', '${client.address.address}:${client.port}').toJson()));
           // client.destroy();
           for(String socket in sockets) {
@@ -304,13 +304,13 @@ class P2P {
             sockets.add(cbp2pm.socket);
           }
         } else if (msg.type == 'single-socket') {
-          SingleSocketP2PMessage ssp2pm = SingleSocketP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          SingleSocketP2PMessage ssp2pm = SingleSocketP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           if(sockets.length < maxPeers && ssp2pm.socket != '$internalIp:$port') {
             sockets.add(ssp2pm.socket);
           }
           client.destroy();
         } else if (msg.type == 'humanify') {
-          HumanifyP2PMessage hp2pm = HumanifyP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          HumanifyP2PMessage hp2pm = HumanifyP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           if (hp2pm.humanify.probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(hp2pm.humanify.interiore.toJson()))).bytes)) {
             if (humanifies.any((h) => h.interiore.id == hp2pm.humanify.interiore.id)) {
               humanifies.removeWhere((element) => element.interiore.id == hp2pm.humanify.interiore.id);
@@ -319,11 +319,11 @@ class P2P {
           }
           client.destroy();
         } else if (msg.type == 'remove-humanify') {
-          RemoveHumanifyP2PMessage rhp2pm = RemoveHumanifyP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          RemoveHumanifyP2PMessage rhp2pm = RemoveHumanifyP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           humanifies.removeWhere((h) => h.interiore.id == rhp2pm.id);
           client.destroy();
         } else if (msg.type == 'scan') {
-            ScanP2PMessage sp2pm = ScanP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+            ScanP2PMessage sp2pm = ScanP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
             List<Obstructionum> obss = await Utils.getObstructionums(dir);
             for (List<Scan> scans in obss.map((e) => e.interioreObstructionum.scans)) {
             if(!scans.any((element) => element.interioreScan.humanifyAnswer?.passphraseIndex == sp2pm.scan.interioreScan.humanifyAnswer?.passphraseIndex && 
@@ -333,11 +333,11 @@ class P2P {
           }
           client.destroy();
         } else if (msg.type == 'remove-scans') {
-          RemoveScansP2PMessage rsp2pm = RemoveScansP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          RemoveScansP2PMessage rsp2pm = RemoveScansP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           scans.removeWhere((s) => rsp2pm.ids.any((id) => id == s.interioreScan.id));
           client.destroy();
         } else if(msg.type == 'propter') {
-          PropterP2PMessage pp2pm = PropterP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          PropterP2PMessage pp2pm = PropterP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           if(pp2pm.propter.probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(pp2pm.propter.interioreRationem.toJson()))).bytes)) {
             if(propters.any((p) => p.interioreRationem.id == pp2pm.propter.interioreRationem.id)) {
               propters.removeWhere((p) => p.interioreRationem.id == pp2pm.propter.interioreRationem.id);
@@ -346,12 +346,12 @@ class P2P {
             client.destroy();
           }
         } else if (msg.type == 'remove-propters') {
-          RemoveProptersP2PMessage rpp2pm = RemoveProptersP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          RemoveProptersP2PMessage rpp2pm = RemoveProptersP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           propters.removeWhere((p) => rpp2pm.ids.any((id) => id == p.interioreRationem.id));
           client.destroy();
            
         } else if (msg.type == 'cash-ex') {
-          CashExP2PMessage cep2pm = CashExP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          CashExP2PMessage cep2pm = CashExP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           if(cep2pm.cashEx.probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(cep2pm.cashEx.interioreCashEx.toJson()))).bytes)) {
             if (cashExs.any((c) => c.interioreCashEx.signumCashEx.id == cep2pm.cashEx.interioreCashEx.signumCashEx.id)) {
               cashExs.removeWhere((c) => c.interioreCashEx.signumCashEx.id == cep2pm.cashEx.interioreCashEx.signumCashEx.id);
@@ -359,17 +359,17 @@ class P2P {
           }
           client.destroy();
         } else if (msg.type == 'remove-cash-exs') {
-          RemoveCashExP2PMessage rcep2pm = RemoveCashExP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          RemoveCashExP2PMessage rcep2pm = RemoveCashExP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           cashExs.removeWhere((c) => rcep2pm.ids.any((a) => a == c.interioreCashEx.signumCashEx.id));
           client.destroy();
         }
          else if (msg.type == 'expressi-tx') {
-          TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           //maby some validation
           //todo
           expressieTxs.add(tp2pm.tx); 
         } else if (msg.type == 'liber-tx') {
-          TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           List<Obstructionum> obs = await Obstructionum.getBlocks(dir);
           if (await tp2pm.tx.validateLiber(dir)) {
               if (liberTxs.any((tx) => tx.interioreTransaction.id == tp2pm.tx.interioreTransaction.id)) {
@@ -380,7 +380,7 @@ class P2P {
             client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-liber-txs', '${client.address.address}:${client.port}').toJson()));
           }
         } else if (msg.type == 'fixum-tx') {
-          TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           List<Obstructionum> obs = await Obstructionum.getBlocks(dir);
           if (await tp2pm.tx.validateFixum(dir)) {
               if (fixumTxs.any((tx) => tx.interioreTransaction.id == tp2pm.tx.interioreTransaction.id)) {
@@ -391,15 +391,15 @@ class P2P {
             client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-fixum-txs', '${client.address.address}:${client.port}').toJson()));
           } 
         } else if (msg.type == 'remove-liber-txs') {
-          RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           liberTxs.removeWhere((l) => rtp2pm.ids.any((id) => id == l.interioreTransaction.id));
           client.destroy(); 
         } else if (msg.type == 'remove-fixum-txs') {
-          RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           fixumTxs.removeWhere((l) => rtp2pm.ids.any((id) => id == l.interioreTransaction.id));
           client.destroy();
         } else if (msg.type == 'obstructionum') {
-          ObstructionumP2PMessage op2pm = ObstructionumP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+          ObstructionumP2PMessage op2pm = ObstructionumP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           print('recieved obstructionum ${op2pm.obstructionum.interioreObstructionum.obstructionumNumerus}');
           if (dir.listSync().isEmpty && op2pm.obstructionum.interioreObstructionum.generare == Generare.INCIPIO) {
             await op2pm.obstructionum.salvareIncipio(dir);
