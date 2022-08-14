@@ -490,11 +490,11 @@ class P2P {
                         return;
                       }
                       break;
-                    },
+                    }
                     case 'cashEx': {
-                    	if (obs.interioreObstructionum.cashExs[tx.interioreTransaction.outputs.first.cashExIndex].interioreCashEx.signumCashex != tx.interioreTransaction.ouputs.first.nof) {
+                    	if (obs.interioreObstructionum.cashExs[tx.interioreTransaction.outputs.first.cashExIndex!].interioreCashEx.signumCashEx.nof != tx.interioreTransaction.outputs.first.nof) {
                     		print('irritum cash ex');
-                    		return
+                    		return;
                     	}
                     	break;
                     }
