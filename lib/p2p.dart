@@ -289,7 +289,6 @@ class P2P {
       client.listen((data) async {
         print(client.address.address);
         print(client.port);
-        try {
             P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
             print(msg.toJson());
 
@@ -317,8 +316,8 @@ class P2P {
               humanifies.removeWhere((element) => element.interiore.id == hp2pm.humanify.interiore.id);
             }
             humanifies.add(hp2pm.humanify);
-            client.destroy();
           }
+          client.destroy();
         } else if (msg.type == 'remove-humanify') {
           RemoveHumanifyP2PMessage rhp2pm = RemoveHumanifyP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
           humanifies.removeWhere((h) => h.interiore.id == rhp2pm.id);
@@ -750,10 +749,6 @@ class P2P {
             }
           }
         }
-        } catch (err, s) {
-          print(err);
-          print(s);
-        }       
 
         // client.destroy();
         //  else if (msg.type == 'remove-obstructionum') {

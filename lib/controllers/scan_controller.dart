@@ -11,6 +11,7 @@ import 'package:nofiftyone/models/scan.dart';
 import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/p2p.dart';
 import 'package:dbcrypt/dbcrypt.dart';
+import 'package:lzma/lzma.dart';
 class ScanController extends ResourceController {
   Directory directory;
   P2P p2p;
@@ -45,7 +46,7 @@ class ScanController extends ResourceController {
     List<Obstructionum> obss = await Utils.getObstructionums(directory);
     for (Obstructionum obs in obss) {
       if(obs.interioreObstructionum.humanify?.probationem == probationem) {
-        return Response.ok(HEX.decode(obs.interioreObstructionum.humanify!.interiore.img!))..contentType = ContentType("image", "jpeg");
+        return Response.ok(lzma.decode(HEX.decode(obs.interioreObstructionum.humanify!.interiore.img!)))..contentType = ContentType("image", "jpeg");
       }
     }
     return Response.badRequest(body: "no image found for probationem");

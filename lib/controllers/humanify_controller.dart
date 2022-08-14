@@ -10,7 +10,7 @@ import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/p2p.dart';
 import 'package:mime/mime.dart';
 import 'package:lzma/lzma.dart';
-
+import 'package:image/image.dart';
 class HumanifyController extends ResourceController {
   Directory directory;
   P2P p2p;
@@ -29,9 +29,11 @@ class HumanifyController extends ResourceController {
     for (var part in parts) {
         final headers = part.headers;
         final body = await part.toList();
-        final InterioreHumanify humanify = InterioreHumanify(dominus, respondere, quaestio, HEX.encode(body[0]));
+        final ischim = decodeImage(body[0]);
+        // final resized = copyResizeCropSquare(ischim!, 10);
+        // print(HEX.encode(encodePng(shrinked)));
+        final InterioreHumanify humanify = InterioreHumanify(dominus, respondere, quaestio, HEX.encode(lzma.encode(encodeJpg(ischim!, quality: 1))));
         final ReceivePort acciperePortus = ReceivePort();
-        print(lzma.encode(body[0]));
         humanifyIsolates[humanify.id] = await Isolate.spawn(Humanify.quaestum, List<dynamic>.from([humanify, acciperePortus.sendPort]));
         acciperePortus.listen((huschum) {
           print('synchumanify');
