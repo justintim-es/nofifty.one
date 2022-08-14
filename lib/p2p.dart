@@ -503,6 +503,7 @@ class P2P {
                 BigInt transformAble = BigInt.zero;
                 for (List<TransactionInput> inputs in transformInputs.map((tx) => tx.interioreTransaction.inputs)) {
                   for (TransactionInput input in inputs) {
+                      obss.add(op2pm.obstructionum);
                       Obstructionum obstructionum = obss.singleWhere((ob) => ob.interioreObstructionum.liberTransactions.any((tx) => tx.interioreTransaction.id == input.transactionId));
                       Transaction tx = obstructionum.interioreObstructionum.liberTransactions.singleWhere((liber) => liber.interioreTransaction.id == input.transactionId);
                       if (!Utils.cognoscere(PublicKey.fromHex(Pera.curve(), tx.interioreTransaction.outputs[input.index].publicKey), Signature.fromASN1Hex(input.signature), tx.interioreTransaction.outputs[input.index])) {
