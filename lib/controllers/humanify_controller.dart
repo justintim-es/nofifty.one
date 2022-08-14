@@ -9,6 +9,7 @@ import 'package:nofiftyone/models/obstructionum.dart';
 import 'package:nofiftyone/models/utils.dart';
 import 'package:nofiftyone/p2p.dart';
 import 'package:mime/mime.dart';
+import 'package:lzma/lzma.dart';
 
 class HumanifyController extends ResourceController {
   Directory directory;
@@ -30,6 +31,7 @@ class HumanifyController extends ResourceController {
         final body = await part.toList();
         final InterioreHumanify humanify = InterioreHumanify(dominus, respondere, quaestio, HEX.encode(body[0]));
         final ReceivePort acciperePortus = ReceivePort();
+        print(lzma.encode(body[0]));
         humanifyIsolates[humanify.id] = await Isolate.spawn(Humanify.quaestum, List<dynamic>.from([humanify, acciperePortus.sendPort]));
         acciperePortus.listen((huschum) {
           print('synchumanify');

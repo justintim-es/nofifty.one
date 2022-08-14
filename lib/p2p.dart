@@ -293,7 +293,7 @@ class P2P {
             P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
             print(msg.toJson());
 
-                  if(msg.type == 'connect-bootnode') {
+          if(msg.type == 'connect-bootnode') {
           ConnectBootnodeP2PMessage cbp2pm = ConnectBootnodeP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
           client.write(json.encode(OnConnectP2PMessage(sockets, propters, liberTxs, fixumTxs, 'on-connect', '${client.address.address}:${client.port}').toJson()));
           // client.destroy();
@@ -798,6 +798,7 @@ class P2P {
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
       soschock.write(json.encode(HumanifyP2PMessage(humanify, 'humanify', from).toJson()));
+      await soschock.close();
     }
   }
   void syncCashEx(CashEx cashEx) async {
