@@ -289,7 +289,7 @@ class P2P {
       utf8.decoder.bind(client).listen((data) async {
         print(client.address.address);
         print(client.port);
-            P2PMessage msg = P2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
+            P2PMessage msg = P2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
             print(msg.toJson());
 
           if(msg.type == 'connect-bootnode') {
@@ -490,6 +490,13 @@ class P2P {
                         return;
                       }
                       break;
+                    },
+                    case 'cashEx': {
+                    	if (obs.interioreObstructionum.cashExs[tx.interioreTransaction.outputs.first.cashExIndex].interioreCashEx.signumCashex != tx.interioreTransaction.ouputs.first.nof) {
+                    		print('irritum cash ex');
+                    		return
+                    	}
+                    	break;
                     }
                     default: {
                       if (!await tx.validateLiber(dir) || !tx.validateProbationem())  {
