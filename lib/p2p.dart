@@ -16,18 +16,18 @@ import 'package:ecdsa/ecdsa.dart';
 import 'package:elliptic/elliptic.dart';
 class P2PMessage {
   String type;
-  String? from;
-  P2PMessage(this.type, this.from);
+  List<String> recieved;
+  P2PMessage(this.type, this.recieved);
   P2PMessage.fromJson(Map<String, dynamic> jsoschon):
-    type = jsoschon['type'].toString(), from = jsoschon['from'].toString();
+    type = jsoschon['type'].toString(), recieved = List<String>.from(jsoschon['recieved'] as Iterable<dynamic>);
   Map<String, dynamic> toJson() => {
     'type': type,
-    'from': from,
+    'recieved': recieved,
   };
 }
 class SingleSocketP2PMessage extends P2PMessage {
   String socket;
-  SingleSocketP2PMessage(this.socket, String type, String from): super(type, from);
+  SingleSocketP2PMessage(this.socket, String type, List<String> recieved): super(type, recieved);
   SingleSocketP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     socket = jsoschon['socket'].toString(),
     super.fromJson(jsoschon);
@@ -35,11 +35,12 @@ class SingleSocketP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'socket': socket,
     'type': type,
+    'recieved': recieved
   };
 }
 class ConnectBootnodeP2PMessage extends P2PMessage {
   String socket;
-  ConnectBootnodeP2PMessage(this.socket, String type, String from): super(type, from);
+  ConnectBootnodeP2PMessage(this.socket, String type, List<String> recieved): super(type, recieved);
   ConnectBootnodeP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     socket = jsoschon['socket'].toString(),
     super.fromJson(jsoschon);
@@ -47,6 +48,7 @@ class ConnectBootnodeP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'socket': socket,
     'type': type,
+    'recieved': recieved
   };
 }
 class OnConnectP2PMessage extends P2PMessage {
@@ -54,7 +56,7 @@ class OnConnectP2PMessage extends P2PMessage {
   List<Propter> propters;
   List<Transaction> liberTxs;
   List<Transaction> fixumTxs;
-  OnConnectP2PMessage(this.sockets, this.propters, this.liberTxs, this.fixumTxs, String type, String from): super(type, from);
+  OnConnectP2PMessage(this.sockets, this.propters, this.liberTxs, this.fixumTxs, String type, List<String> recieved): super(type, recieved);
   OnConnectP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     sockets = List<String>.from(jsoschon['sockets'] as List<dynamic>),
     propters = List<Propter>.from(jsoschon['propters'].map((x) => Propter.fromJson(x as Map<String, dynamic>)) as Iterable<dynamic>),
@@ -68,25 +70,27 @@ class OnConnectP2PMessage extends P2PMessage {
     'liberTxs': liberTxs.map((liber) => liber.toJson()).toList(),
     'fixumTxs': fixumTxs.map((liber) => liber.toJson()).toList(),
     'type': type,
+    'recieved': recieved
   };
 }
 class SocketsP2PMessage extends P2PMessage {
   List<String> sockets;
-  SocketsP2PMessage(this.sockets, String type, String from): super(type, from);
+  SocketsP2PMessage(this.sockets, String type, List<String> recieved): super(type, recieved);
   SocketsP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     sockets = List<String>.from(jsoschon['sockets'] as List<dynamic>),
     super.fromJson(jsoschon);
   @override
   Map<String, dynamic> toJson() => {
     'type': type,
-    'sockets': sockets
+    'sockets': sockets,
+    'recieved': recieved
   };
 }
 
 
 class ScanP2PMessage extends P2PMessage {
   Scan scan;
-  ScanP2PMessage(this.scan, String type, String from): super(type, from);
+  ScanP2PMessage(this.scan, String type, List<String> recieved): super(type, recieved);
   ScanP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     scan = Scan.fromJson(jsoschon['scan'] as Map<String, dynamic>),
     super.fromJson(jsoschon);
@@ -95,23 +99,24 @@ class ScanP2PMessage extends P2PMessage {
     'scan': scan.toJson(),
     'type': type,
     'from': from,
+    'recieved': recieved
   };
 }
 class RemoveScansP2PMessage extends P2PMessage {
   List<String> ids;
-  RemoveScansP2PMessage(this.ids, String type, String from): super(type, from);
+  RemoveScansP2PMessage(this.ids, String type, List<String> recieved): super(type, recieved);
   RemoveScansP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     ids = List<String>.from(jsoschon['ids'] as List<dynamic>),
     super.fromJson(jsoschon);
   Map<String, dynamic> toJson() => {
     'ids': ids,
     'type': type,
-    'from': from,
+    'recieved': recieved
   };
 }
 class HumanifyP2PMessage extends P2PMessage {
   Humanify humanify;
-  HumanifyP2PMessage(this.humanify, String type, String from): super(type, from);
+  HumanifyP2PMessage(this.humanify, String type, List<String> recieved): super(type, recieved);
   HumanifyP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     humanify = Humanify.fromJson(jsoschon['humanify'] as Map<String, dynamic>),
     super.fromJson(jsoschon);
@@ -120,13 +125,12 @@ class HumanifyP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'humanify': humanify.toJson(),
     'type': type,
-    'from': from,
+    'recieved': recieved,
   };
-
 }
 class RemoveHumanifyP2PMessage extends P2PMessage {
   String id;
-  RemoveHumanifyP2PMessage(this.id, String type, String from): super(type, from);
+  RemoveHumanifyP2PMessage(this.id, String type, List<String> recieved): super(type, recieved);
   RemoveHumanifyP2PMessage.fromJson(Map<String, dynamic> jsoschon):  
     id = jsoschon['id'].toString(),
     super.fromJson(jsoschon);
@@ -134,12 +138,12 @@ class RemoveHumanifyP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'id': 'id',
     'type': type,
-    'from': from,
+    'recieved': recieved
   };
 }
 class CashExP2PMessage extends P2PMessage {
   CashEx cashEx;
-  CashExP2PMessage(this.cashEx, String type, String from): super(type, from);
+  CashExP2PMessage(this.cashEx, String type, List<String> recieved): super(type, recieved);
   CashExP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     cashEx = CashEx.fromJson(jsoschon['cashEx'] as Map<String, dynamic>),
     super.fromJson(jsoschon);
@@ -147,12 +151,12 @@ class CashExP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'cashEx': cashEx.toJson(),
     'type': type,
-    'from': from,
+    'recieved': recieved,
   };
 }
 class RemoveCashExP2PMessage extends P2PMessage {
   List<String> ids;
-  RemoveCashExP2PMessage(this.ids, String type, String from): super(type, from);
+  RemoveCashExP2PMessage(this.ids, String type, List<String> recieved): super(type, recieved);
   RemoveCashExP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     ids = List<String>.from(jsoschon['id'] as List<dynamic>),
     super.fromJson(jsoschon);
@@ -160,12 +164,12 @@ class RemoveCashExP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'ids': ids,
     'type': type,
-    'from': from,
+    'recieved': recieved,
   };
 }
 class PropterP2PMessage extends P2PMessage {
   Propter propter;
-  PropterP2PMessage(this.propter, String type, String from): super(type, from);
+  PropterP2PMessage(this.propter, String type, List<String> recieved): super(type, recieved);
   PropterP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     propter = Propter.fromJson(jsoschon['propter'] as Map<String, dynamic>),
     super.fromJson(jsoschon);
@@ -173,13 +177,13 @@ class PropterP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'propter': propter.toJson(),
     'type': type,
-    'from': from,
+    'recieved': recieved,
   };
 }
 
 class RemoveProptersP2PMessage extends P2PMessage {
   List<String> ids;
-  RemoveProptersP2PMessage(this.ids, String type, String from): super(type, from);
+  RemoveProptersP2PMessage(this.ids, String type, List<String> recieved): super(type, recieved);
   RemoveProptersP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     ids = List<String>.from(jsoschon['ids'] as List<dynamic>),
     super.fromJson(jsoschon);
@@ -191,7 +195,7 @@ class RemoveProptersP2PMessage extends P2PMessage {
 }
 class TransactionP2PMessage extends P2PMessage {
   Transaction tx;
-  TransactionP2PMessage(this.tx, String type, String from): super(type, from);
+  TransactionP2PMessage(this.tx, String type, List<String> recieved): super(type, recieved);
   TransactionP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     tx = Transaction.fromJson(jsoschon['tx'] as Map<String, dynamic>),
     super.fromJson(jsoschon);
@@ -199,25 +203,26 @@ class TransactionP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'tx': tx.toJson(),
     'type': type,
+    'recieved': recieved
   };
 }
 class RemoveTransactionsP2PMessage extends P2PMessage {
   List<String> ids;
-  RemoveTransactionsP2PMessage(this.ids, String type, String from): super(type, from);
+  RemoveTransactionsP2PMessage(this.ids, String type, List<String> recieved): super(type, recieved);
   RemoveTransactionsP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     ids = List<String>.from(jsoschon['ids'] as List<dynamic>),
     super.fromJson(jsoschon);
   @override
   Map<String, dynamic> toJson() => {
     'ids': ids,
-    'type': type,
+    'recieved': recieved,
   };
 }
 
 class ObstructionumP2PMessage extends P2PMessage {
   String secret;
   Obstructionum obstructionum;
-  ObstructionumP2PMessage(this.secret, this.obstructionum, String type, String from): super(type, from);
+  ObstructionumP2PMessage(this.secret, this.obstructionum, String type, List<String> recieved): super(type, recieved);
   ObstructionumP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     obstructionum = Obstructionum.fromJson(jsoschon['obstructionum'] as Map<String, dynamic>),
     secret = jsoschon['secret'] as String,
@@ -227,11 +232,12 @@ class ObstructionumP2PMessage extends P2PMessage {
     'obstructionum': obstructionum.toJson(),
     'secret': secret,
     'type': type,
+    'recieved': recieved
   };
 }
 class RequestObstructionumP2PMessage extends P2PMessage {
   List<int> numerus;
-  RequestObstructionumP2PMessage(this.numerus, String type, String from, ): super(type, from);
+  RequestObstructionumP2PMessage(this.numerus, String type, List<String> recieved): super(type, recieved);
   RequestObstructionumP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     numerus = List<int>.from(jsoschon['numerus'] as List<dynamic>),
     super.fromJson(jsoschon);
@@ -239,12 +245,13 @@ class RequestObstructionumP2PMessage extends P2PMessage {
   Map<String, dynamic> toJson() => {
     'numerus': numerus,
     'type': type,
+    'recieved': recieved
   };
 }
 class ProbationemP2PMessage extends P2PMessage {
   String probationem;
   String secret;
-  ProbationemP2PMessage(this.probationem, this.secret, String type, String from): super(type, from);
+  ProbationemP2PMessage(this.probationem, this.secret, String type, String recieved): super(type, recieved);
   ProbationemP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     probationem = jsoschon['probationem'].toString(),
     secret = jsoschon['secret'].toString(),
@@ -254,6 +261,7 @@ class ProbationemP2PMessage extends P2PMessage {
     'probationem': probationem,
     'secret': secret,
     'type': type,
+    'recieved': recieved
   };
 }
 class P2P {
@@ -317,10 +325,20 @@ class P2P {
             }
             humanifies.add(hp2pm.humanify);
           }
+          hp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !hp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(hp2pm.toJson()))
+          }
           client.destroy();
         } else if (msg.type == 'remove-humanify') {
           RemoveHumanifyP2PMessage rhp2pm = RemoveHumanifyP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           humanifies.removeWhere((h) => h.interiore.id == rhp2pm.id);
+          rhp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !rhp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rhp2pm.toJson()))
+          }
           client.destroy();
         } else if (msg.type == 'scan') {
             ScanP2PMessage sp2pm = ScanP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
@@ -330,11 +348,21 @@ class P2P {
               element.interioreScan.humanifyAnswer?.probationem == sp2pm.scan.interioreScan.humanifyAnswer?.probationem)) {
               scans.add(sp2pm.scan);
             }
+            sp2pm.recieved.add('${client.address.address}:${client.port}');
+            for (String socket in sockets.where((s) => !sp2pm.recieved.contains(s))) {
+              Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+              soschock.write(json.encode(sp2pm.toJson()))
+            }
           }
           client.destroy();
         } else if (msg.type == 'remove-scans') {
           RemoveScansP2PMessage rsp2pm = RemoveScansP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           scans.removeWhere((s) => rsp2pm.ids.any((id) => id == s.interioreScan.id));
+          rsp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !rsp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rsp2pm.toJson()))
+          }
           client.destroy();
         } else if(msg.type == 'propter') {
           PropterP2PMessage pp2pm = PropterP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
@@ -343,13 +371,23 @@ class P2P {
               propters.removeWhere((p) => p.interioreRationem.id == pp2pm.propter.interioreRationem.id);
             }
             propters.add(pp2pm.propter);
-            client.destroy();
           }
+          pp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !pp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(pp2pm.toJson()));
+          }
+          client.destroy();
+          
         } else if (msg.type == 'remove-propters') {
           RemoveProptersP2PMessage rpp2pm = RemoveProptersP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           propters.removeWhere((p) => rpp2pm.ids.any((id) => id == p.interioreRationem.id));
+          rpp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !rpp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rsp2pm.toJson()))
+          }
           client.destroy();
-           
         } else if (msg.type == 'cash-ex') {
           CashExP2PMessage cep2pm = CashExP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           if(cep2pm.cashEx.probationem == HEX.encode(sha512.convert(utf8.encode(json.encode(cep2pm.cashEx.interioreCashEx.toJson()))).bytes)) {
@@ -357,17 +395,32 @@ class P2P {
               cashExs.removeWhere((c) => c.interioreCashEx.signumCashEx.id == cep2pm.cashEx.interioreCashEx.signumCashEx.id);
             }
           }
+          cep2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !cep2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(cep2pm.toJson()))
+          }
           client.destroy();
         } else if (msg.type == 'remove-cash-exs') {
           RemoveCashExP2PMessage rcep2pm = RemoveCashExP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           cashExs.removeWhere((c) => rcep2pm.ids.any((a) => a == c.interioreCashEx.signumCashEx.id));
+          rcep2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !rsp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rsp2pm.toJson()))
+          }
           client.destroy();
         }
          else if (msg.type == 'expressi-tx') {
           TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           //maby some validation
-          //todo
+          //todo`
           expressieTxs.add(tp2pm.tx); 
+          tp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !tp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(tp2pm.toJson()))
+          }
         } else if (msg.type == 'liber-tx') {
           TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           List<Obstructionum> obs = await Obstructionum.getBlocks(dir);
@@ -379,6 +432,11 @@ class P2P {
           } else {
             client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-liber-txs', '${client.address.address}:${client.port}').toJson()));
           }
+          p2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !tp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rsp2pm.toJson()))
+          }
         } else if (msg.type == 'fixum-tx') {
           TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           List<Obstructionum> obs = await Obstructionum.getBlocks(dir);
@@ -389,14 +447,27 @@ class P2P {
               fixumTxs.add(tp2pm.tx);
           } else {
             client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-fixum-txs', '${client.address.address}:${client.port}').toJson()));
-          } 
+          }
+          tp2pm.recieved.add('${client.address.address}:${client.port}');
+          for (String socket in sockets.where((s) => !tp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rsp2pm.toJson()))
+          }
         } else if (msg.type == 'remove-liber-txs') {
           RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           liberTxs.removeWhere((l) => rtp2pm.ids.any((id) => id == l.interioreTransaction.id));
+          for (String socket in sockets.where((s) => !rtp2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rtp2pm.toJson()))
+          }
           client.destroy(); 
         } else if (msg.type == 'remove-fixum-txs') {
           RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           fixumTxs.removeWhere((l) => rtp2pm.ids.any((id) => id == l.interioreTransaction.id));
+          for (String socket in sockets.where((s) => !rt2pm.recieved.contains(s))) {
+            Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+            soschock.write(json.encode(rtp2pm.toJson()))
+          }
           client.destroy();
         } else if (msg.type == 'obstructionum') {
           ObstructionumP2PMessage op2pm = ObstructionumP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
@@ -715,6 +786,11 @@ class P2P {
                 if (isConfussusActive) {
                   confussusRp.sendPort.send("");
                 }
+                op2pm.recieved.add('${client.address.address}:${client.port}');
+                for (String socket in sockets.where((s) => !rsp2pm.recieved.contains(s))) {
+                  Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
+                  soschock.write(json.encode(rsp2pm.toJson()))
+                }
                 // P2P.syncBlock(List<dynamic>.from([op2pm.obstructionum, sockets.length > 1 ? sockets.skip(sockets.indexOf('$from')).toList() : sockets, dir, '${client.address.address}:${client.port}']));
                 // for (ReceivePort rp in efectusMiners) {
                 //
@@ -790,7 +866,7 @@ class P2P {
     propters.add(propter);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(PropterP2PMessage(propter, 'propter', from).toJson()));
+      soschock.write(json.encode(PropterP2PMessage(propter, 'propter', sockets).toJson()));
     }
   }
   void syncHumanify(Humanify humanify) async {
@@ -800,7 +876,7 @@ class P2P {
     humanifies.add(humanify);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(HumanifyP2PMessage(humanify, 'humanify', from).toJson()));
+      soschock.write(json.encode(HumanifyP2PMessage(humanify, 'humanify', sockets).toJson()));
       await soschock.close();
     }
   }
@@ -811,7 +887,7 @@ class P2P {
     cashExs.add(cashEx);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(CashExP2PMessage(cashEx, 'cash-ex', from).toJson()));
+      soschock.write(json.encode(CashExP2PMessage(cashEx, 'cash-ex', sockets).toJson()));
     }
   }
   void syncLiberTx(Transaction tx) async {
@@ -821,7 +897,7 @@ class P2P {
     liberTxs.add(tx);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(TransactionP2PMessage(tx, 'liber-tx', from).toJson()));
+      soschock.write(json.encode(TransactionP2PMessage(tx, 'liber-tx', sockets).toJson()));
       soschock.listen((data) async {
         RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
         liberTxs.removeWhere((liber) => rtp2pm.ids.contains(liber.interioreTransaction.id));
@@ -832,7 +908,7 @@ class P2P {
     expressieTxs.add(tx);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(TransactionP2PMessage(tx, 'expressi-tx', from).toJson()));
+      soschock.write(json.encode(TransactionP2PMessage(tx, 'expressi-tx', sockets).toJson()));
     }
   }
   void syncFixumTx(Transaction tx) async {
@@ -842,7 +918,7 @@ class P2P {
     fixumTxs.add(tx);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(TransactionP2PMessage(tx, 'fixum-tx', from).toJson()));
+      soschock.write(json.encode(TransactionP2PMessage(tx, 'fixum-tx', sockets).toJson()));
       soschock.listen((data) async {
         RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
         fixumTxs.removeWhere((fixum) => rtp2pm.ids.contains(fixum.interioreTransaction.id));
@@ -856,49 +932,49 @@ class P2P {
     scans.add(scan);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(ScanP2PMessage(scan, 'scan', from)));
+      soschock.write(json.encode(ScanP2PMessage(scan, 'scan', sockets)));
     }
   }
   void removePropters(List<String> ids) async {
     propters.removeWhere((p) => ids.any((i) => i == p.interioreRationem.id));
      for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(RemoveProptersP2PMessage(ids, 'remove-propters', from).toJson()));
+      soschock.write(json.encode(RemoveProptersP2PMessage(ids, 'remove-propters', sockets).toJson()));
     }
   }
   void removeHumanify(String id) async {
     humanifies.removeWhere((h) => h.interiore.id == id);
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(RemoveHumanifyP2PMessage(id, 'remove-humanify', from)));
+      soschock.write(json.encode(RemoveHumanifyP2PMessage(id, 'remove-humanify', sockets)));
     }
   }
   void removeScans(List<String> ids) async {
     scans.removeWhere((l) => ids.any((i) => i == l.interioreScan.id));
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(RemoveScansP2PMessage(ids, 'remove-scans', from).toJson()));
+      soschock.write(json.encode(RemoveScansP2PMessage(ids, 'remove-scans', sockets).toJson()));
     }
   }
   void removeCashExs(List<String> ids) async {
     cashExs.removeWhere((l) => ids.any((i) => i == l.interioreCashEx.signumCashEx.id));
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(RemoveCashExP2PMessage(ids, 'cash-exs', from).toJson()));
+      soschock.write(json.encode(RemoveCashExP2PMessage(ids, 'cash-exs', sockets).toJson()));
     }
   }
   void removeLiberTxs(List<String> ids) async {
     liberTxs.removeWhere((l) => ids.any((i) => i == l.interioreTransaction.id));
      for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(RemoveTransactionsP2PMessage(ids, 'remove-liber-txs', from).toJson()));
+      soschock.write(json.encode(RemoveTransactionsP2PMessage(ids, 'remove-liber-txs', sockets).toJson()));
     }
   }
   void removeFixumTxs(List<String> ids) async {
     fixumTxs.removeWhere((f) => ids.contains(f.interioreTransaction.id));
     for (String socket in sockets) {
       Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-      soschock.write(json.encode(RemoveTransactionsP2PMessage(ids, 'remove-fixum-txs', from).toJson()));
+      soschock.write(json.encode(RemoveTransactionsP2PMessage(ids, 'remove-fixum-txs', sockets).toJson()));
     }
   }
   static void syncBlock(List<dynamic> args) async {
@@ -924,7 +1000,7 @@ class P2P {
       //   }
       //   idx++;
       // }
-      soschock.write(json.encode(ObstructionumP2PMessage('', obs, 'obstructionum', from).toJson()));
+      soschock.write(json.encode(ObstructionumP2PMessage('', obs, 'obstructionum', sockets).toJson()));
       print('sended ${obs.interioreObstructionum.obstructionumNumerus}');
       soschock.listen((data) async {
         // List<List<String>> lines = [];
@@ -943,13 +1019,13 @@ class P2P {
           if (rop2pm.numerus.last <= Constantes.maximeCaudicesFile) {
             String obs = await Utils.fileAmnis(caudices).elementAt(rop2pm.numerus.last);
             Obstructionum obsObs = Obstructionum.fromJson(json.decode(obs) as Map<String, dynamic>);
-            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', from).toJson()));
+            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', sockets).toJson()));
             print('sended block ${rop2pm.numerus}');
           } else {
             rop2pm.numerus.add(0);
             String obs = await Utils.fileAmnis(caudices).elementAt(rop2pm.numerus.last);
             Obstructionum obsObs = Obstructionum.fromJson(json.decode(obs) as Map<String, dynamic>);
-            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', from).toJson()));
+            soschock.write(json.encode(ObstructionumP2PMessage('', obsObs, 'obstructionum', sockets).toJson()));
             print('sended block ${rop2pm.numerus}');
           }
         } else if (p2pm.type == 'probationem') {
@@ -997,7 +1073,7 @@ class P2P {
           // maby we dont need a proof like that because when it syncs it keeps on checking for a greater difficulty
           // once we sync the greater difficulty we can create a secret and resude that secret when we send a block with a lower difficulty
           // a different approach would be to delete so that total difficulty decreases too too messy
-          soschock.write(json.encode(ObstructionumP2PMessage(ropp2pm.secret, priorObstructionumProbationem, 'obstructionum', from).toJson()));          
+          soschock.write(json.encode(ObstructionumP2PMessage(ropp2pm.secret, priorObstructionumProbationem, 'obstructionum', sockets).toJson()));          
           print('sended ${priorObstructionumProbationem.interioreObstructionum.obstructionumNumerus}');
           // if (ropp2pm.probationem != priorObstructionum.interioreObstructionum.probationem) {
           //   soschock.write(json.encode(RequestProbationemP2PMessage(ropp2pm.index, 'request-probationem').toJson()));
