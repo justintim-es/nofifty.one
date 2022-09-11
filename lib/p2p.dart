@@ -94,11 +94,11 @@ class ScanP2PMessage extends P2PMessage {
   ScanP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     scan = Scan.fromJson(jsoschon['scan'] as Map<String, dynamic>),
     super.fromJson(jsoschon);
+
   @override
   Map<String, dynamic> toJson() => {
     'scan': scan.toJson(),
     'type': type,
-    'from': from,
     'recieved': recieved
   };
 }
@@ -251,7 +251,7 @@ class RequestObstructionumP2PMessage extends P2PMessage {
 class ProbationemP2PMessage extends P2PMessage {
   String probationem;
   String secret;
-  ProbationemP2PMessage(this.probationem, this.secret, String type, String recieved): super(type, recieved);
+  ProbationemP2PMessage(this.probationem, this.secret, String type, List<String> recieved): super(type, recieved);
   ProbationemP2PMessage.fromJson(Map<String, dynamic> jsoschon):
     probationem = jsoschon['probationem'].toString(),
     secret = jsoschon['secret'].toString(),
@@ -302,11 +302,11 @@ class P2P {
 
           if(msg.type == 'connect-bootnode') {
           ConnectBootnodeP2PMessage cbp2pm = ConnectBootnodeP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
-          client.write(json.encode(OnConnectP2PMessage(sockets, propters, liberTxs, fixumTxs, 'on-connect', '${client.address.address}:${client.port}').toJson()));
+          client.write(json.encode(OnConnectP2PMessage(sockets, propters, liberTxs, fixumTxs, 'on-connect', List<String>.from(['${client.address.address}:${client.port}'])).toJson()));
           // client.destroy();
           for(String socket in sockets) {
             Socket s = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            s.write(json.encode(SingleSocketP2PMessage(cbp2pm.socket, 'single-socket', '${client.address.address}:${client.port}')));
+            s.write(json.encode(SingleSocketP2PMessage(cbp2pm.socket, 'single-socket', List<String>.from(['${client.address.address}:${client.port}']))));
           }
           if(sockets.length < maxPeers && !sockets.contains(cbp2pm.socket) && cbp2pm.socket != '$internalIp:$port') {
             sockets.add(cbp2pm.socket);
@@ -328,7 +328,7 @@ class P2P {
           hp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !hp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(hp2pm.toJson()))
+            soschock.write(json.encode(hp2pm.toJson()));
           }
           client.destroy();
         } else if (msg.type == 'remove-humanify') {
@@ -337,7 +337,7 @@ class P2P {
           rhp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !rhp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rhp2pm.toJson()))
+            soschock.write(json.encode(rhp2pm.toJson()));
           }
           client.destroy();
         } else if (msg.type == 'scan') {
@@ -351,7 +351,7 @@ class P2P {
             sp2pm.recieved.add('${client.address.address}:${client.port}');
             for (String socket in sockets.where((s) => !sp2pm.recieved.contains(s))) {
               Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-              soschock.write(json.encode(sp2pm.toJson()))
+              soschock.write(json.encode(sp2pm.toJson()));
             }
           }
           client.destroy();
@@ -361,7 +361,7 @@ class P2P {
           rsp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !rsp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rsp2pm.toJson()))
+            soschock.write(json.encode(rsp2pm.toJson()));
           }
           client.destroy();
         } else if(msg.type == 'propter') {
@@ -385,7 +385,7 @@ class P2P {
           rpp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !rpp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rsp2pm.toJson()))
+            soschock.write(json.encode(rpp2pm.toJson()));
           }
           client.destroy();
         } else if (msg.type == 'cash-ex') {
@@ -398,16 +398,16 @@ class P2P {
           cep2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !cep2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(cep2pm.toJson()))
+            soschock.write(json.encode(cep2pm.toJson()));
           }
           client.destroy();
         } else if (msg.type == 'remove-cash-exs') {
           RemoveCashExP2PMessage rcep2pm = RemoveCashExP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           cashExs.removeWhere((c) => rcep2pm.ids.any((a) => a == c.interioreCashEx.signumCashEx.id));
           rcep2pm.recieved.add('${client.address.address}:${client.port}');
-          for (String socket in sockets.where((s) => !rsp2pm.recieved.contains(s))) {
+          for (String socket in sockets.where((s) => !rcep2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rsp2pm.toJson()))
+            soschock.write(json.encode(rcep2pm.toJson()));
           }
           client.destroy();
         }
@@ -419,7 +419,7 @@ class P2P {
           tp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !tp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(tp2pm.toJson()))
+            soschock.write(json.encode(tp2pm.toJson()));
           }
         } else if (msg.type == 'liber-tx') {
           TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
@@ -430,12 +430,12 @@ class P2P {
               }
               liberTxs.add(tp2pm.tx);
           } else {
-            client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-liber-txs', '${client.address.address}:${client.port}').toJson()));
+            client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-liber-txs', List<String>.from(['${client.address.address}:${client.port}'])).toJson()));
           }
-          p2pm.recieved.add('${client.address.address}:${client.port}');
+          tp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !tp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rsp2pm.toJson()))
+            soschock.write(json.encode(tp2pm.toJson()));
           }
         } else if (msg.type == 'fixum-tx') {
           TransactionP2PMessage tp2pm = TransactionP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
@@ -446,27 +446,27 @@ class P2P {
               }
               fixumTxs.add(tp2pm.tx);
           } else {
-            client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-fixum-txs', '${client.address.address}:${client.port}').toJson()));
+            client.write(json.encode(RemoveTransactionsP2PMessage(List<String>.from([tp2pm.tx.interioreTransaction.id]), 'remove-fixum-txs', List<String>.from(['${client.address.address}:${client.port}'])).toJson()));
           }
           tp2pm.recieved.add('${client.address.address}:${client.port}');
           for (String socket in sockets.where((s) => !tp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rsp2pm.toJson()))
+            soschock.write(json.encode(tp2pm.toJson()));
           }
         } else if (msg.type == 'remove-liber-txs') {
           RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           liberTxs.removeWhere((l) => rtp2pm.ids.any((id) => id == l.interioreTransaction.id));
           for (String socket in sockets.where((s) => !rtp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rtp2pm.toJson()))
+            soschock.write(json.encode(rtp2pm.toJson()));
           }
           client.destroy(); 
         } else if (msg.type == 'remove-fixum-txs') {
           RemoveTransactionsP2PMessage rtp2pm = RemoveTransactionsP2PMessage.fromJson(json.decode(data) as Map<String, dynamic>);
           fixumTxs.removeWhere((l) => rtp2pm.ids.any((id) => id == l.interioreTransaction.id));
-          for (String socket in sockets.where((s) => !rt2pm.recieved.contains(s))) {
+          for (String socket in sockets.where((s) => !rtp2pm.recieved.contains(s))) {
             Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-            soschock.write(json.encode(rtp2pm.toJson()))
+            soschock.write(json.encode(rtp2pm.toJson()));
           }
           client.destroy();
         } else if (msg.type == 'obstructionum') {
@@ -474,10 +474,10 @@ class P2P {
           print('recieved obstructionum ${op2pm.obstructionum.interioreObstructionum.obstructionumNumerus}');
           if (dir.listSync().isEmpty && op2pm.obstructionum.interioreObstructionum.generare == Generare.INCIPIO) {
             await op2pm.obstructionum.salvareIncipio(dir);
-            client.write(json.encode(RequestObstructionumP2PMessage([1], 'request-obstructionum', '${client.address.address}:${client.port}').toJson()));
+            client.write(json.encode(RequestObstructionumP2PMessage([1], 'request-obstructionum', List<String>.from(['${client.address.address}:${client.port}'])).toJson()));
             print('requested incipio block');
           } else if (dir.listSync().isEmpty && op2pm.obstructionum.interioreObstructionum.generare != Generare.INCIPIO) {
-              client.write(json.encode(RequestObstructionumP2PMessage([0], 'request-obstructionum', '${client.address.address}:${client.port}', ).toJson()));
+              client.write(json.encode(RequestObstructionumP2PMessage([0], 'request-obstructionum', List<String>.from(['${client.address.address}:${client.port}']) ).toJson()));
               print('requested block one');
           } else {
             Obstructionum obs = await Utils.priorObstructionum(dir);
@@ -787,9 +787,9 @@ class P2P {
                   confussusRp.sendPort.send("");
                 }
                 op2pm.recieved.add('${client.address.address}:${client.port}');
-                for (String socket in sockets.where((s) => !rsp2pm.recieved.contains(s))) {
+                for (String socket in sockets.where((s) => !op2pm.recieved.contains(s))) {
                   Socket soschock = await Socket.connect(socket.split(':')[0], int.parse(socket.split(':')[1]));
-                  soschock.write(json.encode(rsp2pm.toJson()))
+                  soschock.write(json.encode(op2pm.toJson()));
                 }
                 // P2P.syncBlock(List<dynamic>.from([op2pm.obstructionum, sockets.length > 1 ? sockets.skip(sockets.indexOf('$from')).toList() : sockets, dir, '${client.address.address}:${client.port}']));
                 // for (ReceivePort rp in efectusMiners) {
@@ -804,7 +804,7 @@ class P2P {
                   summaNumerus.add(0);
                 }
 
-                client.write(json.encode(RequestObstructionumP2PMessage(summaNumerus, 'request-obstructionum', '${client.address.address}:${client.port}').toJson()));
+                client.write(json.encode(RequestObstructionumP2PMessage(summaNumerus, 'request-obstructionum', List<String>.from(['${client.address.address}:${client.port}'])).toJson()));
                 print('requested block $summaNumerus');
                 // await syncBlock(obs);
               } else {
@@ -828,7 +828,7 @@ class P2P {
                 //but than we remove the block that is new
                 print('remota summum obstructionum cum probationem ${obs.probationem}');
                 await Utils.removeObstructionumsUntilProbationem(dir);
-                client.write(json.encode(ProbationemP2PMessage(obs.probationem, secret, 'probationem', '${client.address.address}:${client.port}').toJson()));
+                client.write(json.encode(ProbationemP2PMessage(obs.probationem, secret, 'probationem', List<String>.from(['${client.address.address}:${client.port}'])).toJson()));
               } 
             }
           }
@@ -848,7 +848,7 @@ class P2P {
   void connect(String bootnode, String me) async {
     sockets.add(bootnode);
     Socket socket = await Socket.connect(bootnode.split(':')[0], int.parse(bootnode.split(':')[1]));
-    socket.write(json.encode(ConnectBootnodeP2PMessage(me, 'connect-bootnode', me).toJson()));
+    socket.write(json.encode(ConnectBootnodeP2PMessage(me, 'connect-bootnode', List<String>.from([me])).toJson()));
     socket.listen((data) async {
       OnConnectP2PMessage ocp2pm = OnConnectP2PMessage.fromJson(json.decode(String.fromCharCodes(data).trim()) as Map<String, dynamic>);
       if(sockets.length < maxPeers) {
